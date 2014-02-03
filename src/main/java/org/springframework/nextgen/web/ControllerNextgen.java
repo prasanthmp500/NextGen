@@ -1,17 +1,21 @@
 package org.springframework.nextgen.web;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+@Controller
+@RequestMapping("/test")
 public class ControllerNextgen {
 
+	
 	public ControllerNextgen() {
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	@RequestMapping(value="/hello",method=RequestMethod.GET)
+	public String getHello(){
+		return "test/test";
 	}
+	
 
 }
