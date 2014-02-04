@@ -9,8 +9,8 @@
   <url>http://maven.apache.org</url>
   
   <properties>
-    <!-- Spring -->
-	<spring-framework.version>3.2.7.RELEASE</spring-framework.version>
+  		<spring-framework.version>3.2.7.RELEASE</spring-framework.version>
+  		<jstl-version>1.2</jstl-version>
   </properties>
   
   
@@ -63,7 +63,20 @@
 			<artifactId>spring-jms</artifactId>
 			<version>${spring-framework.version}</version>
 		</dependency>
-    
+
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl-version}</version>
+		</dependency>
+				
+		<dependency>
+		  <groupId>taglibs</groupId>
+		  <artifactId>standard</artifactId>
+		  <version>1.1.2</version>
+		  <scope>compile</scope>
+		</dependency>
+		
       
     <dependency>
       <groupId>junit</groupId>

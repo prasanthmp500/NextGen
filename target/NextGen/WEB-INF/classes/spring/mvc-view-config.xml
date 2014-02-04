@@ -18,12 +18,12 @@
     -->
     
     
-            		 <!-- Default viewClass: JSTL view (JSP with html output) -->
-			    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-			        <!-- Example: a logical view name of 'vets' is mapped to '/WEB-INF/jsp/vets.jsp' -->
-			        <property name="prefix" value="/WEB-INF/jsp/"/>
-			        <property name="suffix" value=".jsp"/>
-			    </bean>    
+   		 <!-- Default viewClass: JSTL view (JSP with html output) -->
+		    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		        <!-- Example: a logical view name of 'vets' is mapped to '/WEB-INF/jsp/vets.jsp' -->
+		        <property name="prefix" value="/WEB-INF/jsp/"/>
+		        <property name="suffix" value=".jsp"/>
+		    </bean>    
     
     
 </beans>

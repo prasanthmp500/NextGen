@@ -27,5 +27,9 @@
         (see header.jsp for more details) 
     <mvc:resources mapping="/resources/**" location="/resources/"/>
     -->
-
+  <mvc:annotation-driven />
+  <mvc:default-servlet-handler/>
+  <mvc:resources mapping="/resources/**" location="/resources/" /> 
+    
+    
 </beans>
