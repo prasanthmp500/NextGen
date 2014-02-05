@@ -10,7 +10,9 @@
 <body>
 <div class="container">
 
-Home page
+
+<div class="test"> Home page </div>
+
 
 <img src="resources/images/banner-graphic.png" />
 

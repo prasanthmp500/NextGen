@@ -13,10 +13,10 @@ NextGen :: The header tag
     <title>NextGen</title>
 
  	<c:set var="nextCss" value="/resources/css/nextgen.css" />
-    <link href="${nextCss}" rel="stylesheet"/>    
+    <link type="text/css" href="<%= request.getContextPath()%>${nextCss}" rel="stylesheet"/>    
    
     <c:set var="jQuery" value="/resources/javascript/jquery-2.1.0.js"> </c:set>
-    <script src="${jQuery}"></script>
+    <script src="<%= request.getContextPath()%>${jQuery}"></script>
     
 </head>
 

@@ -19,3 +19,7 @@ input[type="text"] {
 .form-horizontal .control-label {
     text-align: left;
 }
+
+.test {
+  color: red;
+}
