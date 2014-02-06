@@ -11,7 +11,29 @@
 	<jsp:include page="../fragments/headTag.jsp"/>
 	
 	<script type="text/javascript">
+	
+	$(document).ready(function(){	
 		
+			  $("#artistName").keyup(function(){
+				
+					var input = $(this).val();
+					alert(input);
+					if(input.length > 3 ){
+						 $.get("/NextGen/search/artist/".concat(input),function(data,status){
+						      alert("Data: " + data + "\nStatus: " + status);
+							      if(status=="success"){
+							    	  document.getElementById("searchResults").innerHTML=data;  
+							     	 }					      
+						   		 });
+							}			  
+			  	});
+			});
+	
+	
+		
+  <%-- 
+	
+	
 	function getArtist(searchBox){
 		var input = searchBox.value;
 		if(input.length > 3) {
@@ -19,8 +41,7 @@
 		}
 	}
 	
-	
-	
+
 	function loadXMLDoc(searchResult)
 	{
 
@@ -51,7 +72,9 @@
 
 	}
 
-	
+
+	 --%>
+	 
 	</script>
 </head>	
 	
@@ -63,7 +86,7 @@
 			 -->
 			<form action="/search/similarArtist" method="post">
 			
-				<input type="search" name="artistName" onkeyup="getArtist(this);">
+				<input type="search" id="artistName">
 				
 					<div id="searchResults">
 				
