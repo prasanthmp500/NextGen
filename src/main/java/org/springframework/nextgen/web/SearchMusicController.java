@@ -1,5 +1,6 @@
 package org.springframework.nextgen.web;
 
+import org.springframework.nextgen.utils.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +14,6 @@ import org.springframework.web.client.RestTemplate;
 public class SearchMusicController {
 
 	
-   private String LAST_FM_API_KEY = "3b0a68e77d37c16e8862d3f095b14013";	
-	
    public SearchMusicController() {}
 	
    
@@ -26,7 +25,7 @@ public class SearchMusicController {
 	   sbf.append("&");
 	   sbf.append("artist=".concat(artistname));
 	   sbf.append("&");
-	   sbf.append("api_key=".concat(LAST_FM_API_KEY));
+	   sbf.append("api_key=".concat(Utils.LAST_FM_API_KEY));
 	   sbf.append("&");
 	   sbf.append("format=json");
 	   String jsonresult = restTemplate.getForObject(sbf.toString(), String.class);
