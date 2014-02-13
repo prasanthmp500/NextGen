@@ -11,9 +11,42 @@
   <jsp:include page="../fragments/headTag.jsp"/>
 	
 	
+	<%-- killer js --%>
+	       <!-- Various page styles. -->
+
+
+        <script type = "text/javascript">
+            // Create the carousel.
+            $(function() {
+            	
+
+                
+            });
+        </script>
+        
+		<%-- killer js --%>
+	
+	
 	<script type="text/javascript">
 	
 	$(document).ready(function(){	
+		
+		
+        $('.kc-wrap').KillerCarousel({
+            // Default natural width of carousel.
+            width: 800,
+            // Item spacing in 3d (has CSS3 3d) mode.
+            spacing3d: 120,
+            // Item spacing in 2d (no CSS3 3d) mode. 
+            spacing2d: 120,
+            showShadow: true,
+            showReflection: true,
+            // Looping mode.
+            infiniteLoop: true,
+            // Scale at 75% of parent element.
+            autoScale: 75
+        });
+		
 		 
 		$("#artistName").keyup(function(){
 			var similarArtists = new Array();
@@ -62,6 +95,46 @@
 					     	 }	
 				   		 });
 		    		}
+		   		 }).click(function(){
+		   			var input = $("#artistName").val();
+		   			if(input.length > 3){
+		   			
+		   				$.get("/NextGen/search/similarArtist/".concat(input),function(data,status){
+		   					if(status=="success"){
+		   						var jsonObjectSimilarArtists = jQuery.parseJSON(data);
+		   						var showDiv = $('#showSimilarArtists');
+		   						for(var i=0;i<(jsonObjectSimilarArtists.similarartists["artist"]).length;i++){
+		   							var $div = $("<div>", {class: "kc-item"});
+		   							var img  = $('<img>');
+		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);
+		   							img.attr('title',jsonObjectSimilarArtists.similarartists["artist"][i].name);
+		   							$div.append(img);
+		   							$div.show();
+		   							showDiv.append($div);
+		   						}
+		   						
+				                $('.kc-wrap').KillerCarousel({
+				                    // Default natural width of carousel.
+				                    width: 800,
+				                    // Item spacing in 3d (has CSS3 3d) mode.
+				                    spacing3d: 120,
+				                    // Item spacing in 2d (no CSS3 3d) mode. 
+				                    spacing2d: 120,
+				                    showShadow: true,
+				                    showReflection: true,
+				                    // Looping mode.
+				                    infiniteLoop: true,
+				                    // Scale at 75% of parent element.
+				                    autoScale: 75
+				                });
+		   						//
+		   					}		   						
+		   				});//end of get function
+		   				
+		   				
+		   			}
+		   			
+		   			 
 		   		 });
 		
 			  
@@ -86,7 +159,7 @@
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '225',
-          width: '400',
+          width: '350',
           videoId: 'M7lc1UVf-VE',
           events: {
             'onReady': onPlayerReady,
@@ -117,6 +190,13 @@
       
     </script>
 	
+	<script>
+  $(function() {
+    $( "#tabs" ).tabs();
+  });
+</script>
+	
+	
 	
 	 <div id="wrapper">
 	 
@@ -128,12 +208,54 @@
 		<div id="leftpanel">
 			<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     		<div id="player"></div>
+    		
+    		
+    		
 		</div>
 		
 		
 		<div id="rightpanel">
-			<input type="search" id="artistName"> 
-			<button id="playArtist"> Watch  </button>
+
+			
+			
+			<!--  -->
+			<div id="tabs">
+			  <ul>
+			    <li><a href="#tabs-1">Search Music</a></li>
+			    <li><a href="#tabs-2">Search Events</a></li>
+			    <li><a href="#tabs-3">Aenean lacinia</a></li>
+			  </ul>
+			  <div id="tabs-1">
+			    <p>
+			   		<input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
+			    </p>
+			    
+			    <p>
+			   		<div id="showSimilarArtists" class="kc-wrap">
+				    </div>
+				    
+			     </p>
+				
+			    
+			  </div>
+			  <div id="tabs-2">
+			    <p></p>
+			  </div>
+			  <div id="tabs-3">
+			    <p></p>
+			     <p></p>
+			  </div>
+			</div>
+
+
+
+  
+
+			<!--  -->	
+			
+			
+			
+			
 		</div>
 		 
 	 	<div id="footer">

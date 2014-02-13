@@ -3,11 +3,12 @@ body {
 	margin-right: 0%;
 	margin-top: 0%;
 	padding: 0;
-	font-family: Verdana, Helvetica, sans-serif;
-	font-size: 95%;
+	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	font-size: 62.5%;
 	background-color: #F0F0F0;/*#FAF8F8;*/
 	border: 0px;
 }
+
 
 #wrapper {
 	position: relative;

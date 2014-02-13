@@ -5,6 +5,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <!--
 NextGen :: The header tag
 -->
@@ -12,10 +13,9 @@ NextGen :: The header tag
 
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0">
+    
     <title>NextGen</title>
-    
-    
-    
 
  	<c:set var="nextCss" value="/resources/css/nextgen.css" />
     <link type="text/css" href="<%= request.getContextPath()%>${nextCss}" rel="stylesheet"/>    
@@ -23,8 +23,14 @@ NextGen :: The header tag
     
     
      <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-  	 <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  	 <script src="http://code.jquery.com/jquery-1.10.1.js"></script>
      <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+         
+    <c:set var="killerCarouselJS" value="/resources/javascript/killercarousel.js"> </c:set>
+    <script src="<%= request.getContextPath()%>${killerCarouselJS}"></script>
+   
+    <c:set var="killerCarouselCss" value="/resources/css/killercarousel.css"> </c:set> 
+    <link type="text/css" href="<%= request.getContextPath()%>${killerCarouselCss}" rel="stylesheet">
    
     <!-- jquery ui
       
@@ -39,9 +45,12 @@ NextGen :: The header tag
     <script src="<%= request.getContextPath()%>${jqueryUiJs}"></script>
     
     <c:set var="jqueryUiCss" value="/resources/css/jquery-ui.css"> </c:set> 
-    <link type="text/css" href="<%= request.getContextPath()%>${jqueryUiCss}" rel="stylesheet"></script>
+    <link type="text/css" href="<%= request.getContextPath()%>${jqueryUiCss}" rel="stylesheet">
     
    -->
     
+  
+	
+	<link rel="stylesheet" href="https://jqueryui.com/jquery-wp-content/themes/jqueryui.com/style.css">
 
-
+ 

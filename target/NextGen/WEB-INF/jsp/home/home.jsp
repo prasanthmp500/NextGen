@@ -11,6 +11,70 @@
   <jsp:include page="../fragments/headTag.jsp"/>
 	
 	
+	<%-- killer js --%>
+	       <!-- Various page styles. -->
+        <style type="text/css">
+
+            body {
+                font-family: arial, sans-serif;
+                color: #444;
+                font-size: 16px;
+                padding:0px;
+                margin:0px;
+            }
+
+            p {
+                line-height: 20px;
+            }
+
+            code {
+                font-weight: bold;
+                color: #f44;;
+            }
+            a {
+                color:#3d8dde;
+            }
+
+            #wrapper {
+                padding:10px;
+            }
+        </style>
+
+        <!-- Styles for the Carousel -->
+        <style type = "text/css">
+
+            /* CSS for images inside item wrapper */
+            .kc-item img {
+                position:absolute;
+                pointer-events: none;   /* Make images non-selectable. */
+                width:100%;             /* Make images expand to wrapper size (used in 2d modes). */
+            }
+
+        </style>
+
+        <script type = "text/javascript">
+            // Create the carousel.
+            $(function() {
+                $('.kc-wrap').KillerCarousel({
+                    // Default natural width of carousel.
+                    width: 800,
+                    // Item spacing in 3d (has CSS3 3d) mode.
+                    spacing3d: 120,
+                    // Item spacing in 2d (no CSS3 3d) mode. 
+                    spacing2d: 120,
+                    showShadow: true,
+                    showReflection: true,
+                    // Looping mode.
+                    infiniteLoop: true,
+                    // Scale at 75% of parent element.
+                    autoScale: 75
+                });
+            });
+        </script>
+        
+		<%-- killer js --%>
+	
+	
 	<script type="text/javascript">
 	
 	$(document).ready(function(){	
@@ -62,6 +126,34 @@
 					     	 }	
 				   		 });
 		    		}
+		   		 }).click(function(){
+		   			var input = $("#artistName").val();
+		   			if(input.length > 3){
+		   			
+		   				$.get("/NextGen/search/similarArtist/".concat(input),function(data,status){
+		   					if(status=="success"){
+		   						var jsonObjectSimilarArtists = jQuery.parseJSON(data);
+		   						var showDiv = $('#showSimilarArtists');
+		   						for(var i=0;i<(jsonObjectSimilarArtists.similarartists["artist"]).length;i++){
+		   							var $div = $("<div>", {class: "kc-item"});
+		   							var img  = $('<img>');
+		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][0].image["4"]["#text"]);
+		   							img.attr('title',jsonObjectSimilarArtists.similarartists["artist"][0].name);
+		   							$div.append(img);
+		   							$div.show();
+		   							showDiv.append($div);
+		   						}
+		   						showDiv.show();
+		   						var temp1 = showDiv.toString();
+		   						showDiv.load($div);
+		   						alert(showDiv.toString());
+		   					}		   						
+		   				});//end of get function
+		   				
+		   				
+		   			}
+		   			
+		   			 
 		   		 });
 		
 			  
@@ -86,7 +178,7 @@
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '225',
-          width: '400',
+          width: '350',
           videoId: 'M7lc1UVf-VE',
           events: {
             'onReady': onPlayerReady,
@@ -117,6 +209,13 @@
       
     </script>
 	
+	<script>
+  $(function() {
+    $( "#tabs" ).tabs();
+  });
+</script>
+	
+	
 	
 	 <div id="wrapper">
 	 
@@ -128,12 +227,54 @@
 		<div id="leftpanel">
 			<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     		<div id="player"></div>
+    		
+    		
+    		
 		</div>
 		
 		
 		<div id="rightpanel">
-			<input type="search" id="artistName"> 
-			<button id="playArtist"> Watch  </button>
+
+			
+			
+			<!--  -->
+			<div id="tabs">
+			  <ul>
+			    <li><a href="#tabs-1">Search Music</a></li>
+			    <li><a href="#tabs-2">Search Events</a></li>
+			    <li><a href="#tabs-3">Aenean lacinia</a></li>
+			  </ul>
+			  <div id="tabs-1">
+			    <p>
+			   		<input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
+			    </p>
+			    
+			    <p>
+			   		<div id="showSimilarArtists" class="kc-wrap">
+				    </div>
+				    
+			     </p>
+				
+			    
+			  </div>
+			  <div id="tabs-2">
+			    <p></p>
+			  </div>
+			  <div id="tabs-3">
+			    <p></p>
+			     <p></p>
+			  </div>
+			</div>
+
+
+
+  
+
+			<!--  -->	
+			
+			
+			
+			
 		</div>
 		 
 	 	<div id="footer">
