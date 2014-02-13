@@ -11,25 +11,14 @@
   <jsp:include page="../fragments/headTag.jsp"/>
 	
 	
-	<%-- killer js --%>
-	       <!-- Various page styles. -->
-
-
-        <script type = "text/javascript">
-            // Create the carousel.
-            $(function() {
-            	
-
-                
-            });
-        </script>
-        
-		<%-- killer js --%>
+	
 	
 	
 	<script type="text/javascript">
 	
-	$(document).ready(function(){	
+	$(document).ready(function(){
+		
+		$( document ).tooltip();
 		
 		
         $('.kc-wrap').KillerCarousel({
@@ -107,9 +96,9 @@
 		   							var $div = $("<div>", {class: "kc-item"});
 		   							var img  = $('<img>');
 		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);
-		   							img.attr('title',jsonObjectSimilarArtists.similarartists["artist"][i].name);
+		   							$div.attr('title',jsonObjectSimilarArtists.similarartists["artist"][i].name);
 		   							$div.append(img);
-		   							$div.show();
+		   							
 		   							showDiv.append($div);
 		   						}
 		   						
