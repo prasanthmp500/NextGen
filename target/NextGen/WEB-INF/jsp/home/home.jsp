@@ -10,74 +10,34 @@
 <head> 
   <jsp:include page="../fragments/headTag.jsp"/>
 	
-	
-	<%-- killer js --%>
-	       <!-- Various page styles. -->
-        <style type="text/css">
 
-            body {
-                font-family: arial, sans-serif;
-                color: #444;
-                font-size: 16px;
-                padding:0px;
-                margin:0px;
-            }
-
-            p {
-                line-height: 20px;
-            }
-
-            code {
-                font-weight: bold;
-                color: #f44;;
-            }
-            a {
-                color:#3d8dde;
-            }
-
-            #wrapper {
-                padding:10px;
-            }
-        </style>
-
-        <!-- Styles for the Carousel -->
-        <style type = "text/css">
-
-            /* CSS for images inside item wrapper */
-            .kc-item img {
-                position:absolute;
-                pointer-events: none;   /* Make images non-selectable. */
-                width:100%;             /* Make images expand to wrapper size (used in 2d modes). */
-            }
-
-        </style>
-
-        <script type = "text/javascript">
-            // Create the carousel.
-            $(function() {
-                $('.kc-wrap').KillerCarousel({
-                    // Default natural width of carousel.
-                    width: 800,
-                    // Item spacing in 3d (has CSS3 3d) mode.
-                    spacing3d: 120,
-                    // Item spacing in 2d (no CSS3 3d) mode. 
-                    spacing2d: 120,
-                    showShadow: true,
-                    showReflection: true,
-                    // Looping mode.
-                    infiniteLoop: true,
-                    // Scale at 75% of parent element.
-                    autoScale: 75
-                });
-            });
-        </script>
-        
-		<%-- killer js --%>
-	
 	
 	<script type="text/javascript">
 	
-	$(document).ready(function(){	
+	
+	
+	
+	$(document).ready(function(){
+		
+		$( document ).tooltip();
+		
+		 $( "#tabs" ).tabs();
+		
+        $('.kc-wrap').KillerCarousel({
+            // Default natural width of carousel.
+            width: 800,
+            // Item spacing in 3d (has CSS3 3d) mode.
+            spacing3d: 120,
+            // Item spacing in 2d (no CSS3 3d) mode. 
+            spacing2d: 120,
+            showShadow: true,
+            showReflection: true,
+            // Looping mode.
+            infiniteLoop: true,
+            // Scale at 75% of parent element.
+            autoScale: 75
+        });
+		
 		 
 		$("#artistName").keyup(function(){
 			var similarArtists = new Array();
@@ -137,16 +97,28 @@
 		   						for(var i=0;i<(jsonObjectSimilarArtists.similarartists["artist"]).length;i++){
 		   							var $div = $("<div>", {class: "kc-item"});
 		   							var img  = $('<img>');
-		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][0].image["4"]["#text"]);
-		   							img.attr('title',jsonObjectSimilarArtists.similarartists["artist"][0].name);
+		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);
+		   							$div.attr('title',jsonObjectSimilarArtists.similarartists["artist"][i].name);
 		   							$div.append(img);
-		   							$div.show();
+		   							
 		   							showDiv.append($div);
 		   						}
-		   						showDiv.show();
-		   						var temp1 = showDiv.toString();
-		   						showDiv.load($div);
-		   						alert(showDiv.toString());
+		   						
+				                $('.kc-wrap').KillerCarousel({
+				                    // Default natural width of carousel.
+				                    width: 800,
+				                    // Item spacing in 3d (has CSS3 3d) mode.
+				                    spacing3d: 120,
+				                    // Item spacing in 2d (no CSS3 3d) mode. 
+				                    spacing2d: 120,
+				                    showShadow: true,
+				                    showReflection: true,
+				                    // Looping mode.
+				                    infiniteLoop: true,
+				                    // Scale at 75% of parent element.
+				                    autoScale: 75
+				                });
+		   						//
 		   					}		   						
 		   				});//end of get function
 		   				
@@ -155,7 +127,42 @@
 		   			
 		   			 
 		   		 });
+		    
+		    
+		    $(function(){
+		    	
+		    	  $.get("/NextGen/search/allEventLocations",function(data,status){
+					  if(status=="success") { 
+						  var jsonEventLocations = jQuery.parseJSON(data);
+						  var metrosLength =(jsonEventLocations.metros["metro"]).length;
+						  var map = new Object();
+						  
+						  for(var i=0;i<metrosLength;i++){
+							var region = (jsonEventLocations.metros["metro"][i]).name;
+							var country = (jsonEventLocations.metros["metro"][i]).country;
+							if( typeof map[country] == "undefined"){
+									var regions = new Array();
+									regions.push(region);
+									map[country] = regions;
+								} else {
+							    	 (map[country]).push(region);
+							}
+						  }
+						  
+						  var keys = Object.keys(map);
+						  for(var i=0;i<keys.length;i++){				  
+							 $("#country").append('<option value="'+keys[i]+'">'+keys[i]+'</option>');
+							 var regionsArray  = map[keys[i]];
+							 for(var j=0; j< regionsArray.length; j++ ){
+								$("#country").append('<option value="'+regionsArray[j]+'">&nbsp;&nbsp;&nbsp;'+regionsArray[j]+'</option>');								
+								 }
+						 	 }
+					 	 }		    		  
+		    		  
+		    	  	});
 		
+				});
+		    
 			  
 			  
 			});
@@ -209,11 +216,7 @@
       
     </script>
 	
-	<script>
-  $(function() {
-    $( "#tabs" ).tabs();
-  });
-</script>
+
 	
 	
 	
@@ -239,11 +242,13 @@
 			
 			<!--  -->
 			<div id="tabs">
+			 
 			  <ul>
 			    <li><a href="#tabs-1">Search Music</a></li>
 			    <li><a href="#tabs-2">Search Events</a></li>
 			    <li><a href="#tabs-3">Aenean lacinia</a></li>
 			  </ul>
+			  
 			  <div id="tabs-1">
 			    <p>
 			   		<input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
@@ -258,11 +263,14 @@
 			    
 			  </div>
 			  <div id="tabs-2">
-			    <p></p>
+			    <p>
+			    	Country : <select id="country"> </select>
+			    </p>
+			    
 			  </div>
 			  <div id="tabs-3">
 			    <p></p>
-			     <p></p>
+
 			  </div>
 			</div>
 

@@ -10,16 +10,18 @@
 <head> 
   <jsp:include page="../fragments/headTag.jsp"/>
 	
-	
-	
-	
+
 	
 	<script type="text/javascript">
+	
+	
+	
 	
 	$(document).ready(function(){
 		
 		$( document ).tooltip();
 		
+		 $( "#tabs" ).tabs();
 		
         $('.kc-wrap').KillerCarousel({
             // Default natural width of carousel.
@@ -125,7 +127,42 @@
 		   			
 		   			 
 		   		 });
+		    
+		    
+		    $(function(){
+		    	
+		    	  $.get("/NextGen/search/allEventLocations",function(data,status){
+					  if(status=="success") { 
+						  var jsonEventLocations = jQuery.parseJSON(data);
+						  var metrosLength =(jsonEventLocations.metros["metro"]).length;
+						  var map = new Object();
+						  
+						  for(var i=0;i<metrosLength;i++){
+							var region = (jsonEventLocations.metros["metro"][i]).name;
+							var country = (jsonEventLocations.metros["metro"][i]).country;
+							if( typeof map[country] == "undefined"){
+									var regions = new Array();
+									regions.push(region);
+									map[country] = regions;
+								} else {
+							    	 (map[country]).push(region);
+							}
+						  }
+						  
+						  var keys = Object.keys(map);
+						  for(var i=0;i<keys.length;i++){				  
+							 $("#country").append('<option value="'+keys[i]+'">'+keys[i]+'</option>');
+							 var regionsArray  = map[keys[i]];
+							 for(var j=0; j< regionsArray.length; j++ ){
+								$("#country").append('<option value="'+regionsArray[j]+'">&nbsp;&nbsp;&nbsp;'+regionsArray[j]+'</option>');								
+								 }
+						 	 }
+					 	 }		    		  
+		    		  
+		    	  	});
 		
+				});
+		    
 			  
 			  
 			});
@@ -179,11 +216,7 @@
       
     </script>
 	
-	<script>
-  $(function() {
-    $( "#tabs" ).tabs();
-  });
-</script>
+
 	
 	
 	
@@ -209,11 +242,13 @@
 			
 			<!--  -->
 			<div id="tabs">
+			 
 			  <ul>
 			    <li><a href="#tabs-1">Search Music</a></li>
 			    <li><a href="#tabs-2">Search Events</a></li>
 			    <li><a href="#tabs-3">Aenean lacinia</a></li>
 			  </ul>
+			  
 			  <div id="tabs-1">
 			    <p>
 			   		<input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
@@ -228,11 +263,14 @@
 			    
 			  </div>
 			  <div id="tabs-2">
-			    <p></p>
+			    <p>
+			    	Country : <select id="country"> </select>
+			    </p>
+			    
 			  </div>
 			  <div id="tabs-3">
 			    <p></p>
-			     <p></p>
+
 			  </div>
 			</div>
 
