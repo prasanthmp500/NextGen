@@ -19,9 +19,11 @@
 	
 	$(document).ready(function(){
 		
+		var map ;
+		
 		$( document ).tooltip();
 		
-		 $( "#tabs" ).tabs();
+		$( "#tabs" ).tabs();
 		
         $('.kc-wrap').KillerCarousel({
             // Default natural width of carousel.
@@ -129,14 +131,12 @@
 		   		 });
 		    
 		    
-		    $(function(){
-		    	
+		    $(function(){		    	
 		    	  $.get("/NextGen/search/allEventLocations",function(data,status){
 					  if(status=="success") { 
 						  var jsonEventLocations = jQuery.parseJSON(data);
 						  var metrosLength =(jsonEventLocations.metros["metro"]).length;
-						  var map = new Object();
-						  
+						  var map = new Object();						  
 						  for(var i=0;i<metrosLength;i++){
 							var region = (jsonEventLocations.metros["metro"][i]).name;
 							var country = (jsonEventLocations.metros["metro"][i]).country;
@@ -147,8 +147,7 @@
 								} else {
 							    	 (map[country]).push(region);
 							}
-						  }
-						  
+						  }						  
 						  var keys = Object.keys(map);
 						  for(var i=0;i<keys.length;i++){				  
 							 $("#country").append('<option value="'+keys[i]+'">'+keys[i]+'</option>');
@@ -157,13 +156,23 @@
 								$("#country").append('<option value="'+regionsArray[j]+'">&nbsp;&nbsp;&nbsp;'+regionsArray[j]+'</option>');								
 								 }
 						 	 }
-					 	 }		    		  
-		    		  
-		    	  	});
-		
+					 	 }
+		    	  	});		
 				});
 		    
 			  
+		    
+		    $(function() {
+			    	var mapOptions;
+			    	mapOptions = {center: new google.maps.LatLng(53.412910,-8.2438),zoom: 8};
+					map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+				});
+		    
+		 
+		    $("#country").change(function(){
+		    	alert("test");
+		    });
+		    
 			  
 			});
 	
@@ -266,6 +275,9 @@
 			    <p>
 			    	Country : <select id="country"> </select>
 			    </p>
+			    
+			    <div id="map-canvas"></div>
+			 
 			    
 			  </div>
 			  <div id="tabs-3">

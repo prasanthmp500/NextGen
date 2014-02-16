@@ -63,4 +63,24 @@ public class SearchMusicController {
 	   return jsonresult;
    }
    
+
+   @RequestMapping(value="/allEvents/{location}", method=RequestMethod.GET)
+   @ResponseBody
+   public String eventsAtLocation(@PathVariable String location){
+	   
+	   RestTemplate restTemplate = new RestTemplate();
+	   StringBuffer sbf = new StringBuffer("http://ws.audioscrobbler.com/2.0/?method=geo.getevents");
+	   sbf.append("&");
+	   sbf.append("location="+location);
+	   sbf.append("&");
+	   sbf.append("api_key=".concat(Utils.LAST_FM_API_KEY));
+	   sbf.append("&");
+	   sbf.append("format=json");
+	   String jsonresult = restTemplate.getForObject(sbf.toString(), String.class);
+	   return jsonresult;
+   }
+   
+   
+   
+   
 }

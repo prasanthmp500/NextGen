@@ -19,9 +19,13 @@
 	
 	$(document).ready(function(){
 		
+		var map ;
+		
+		var markers = [];
+		
 		$( document ).tooltip();
 		
-		 $( "#tabs" ).tabs();
+		$( "#tabs" ).tabs();
 		
         $('.kc-wrap').KillerCarousel({
             // Default natural width of carousel.
@@ -129,14 +133,12 @@
 		   		 });
 		    
 		    
-		    $(function(){
-		    	
+		    $(function(){		    	
 		    	  $.get("/NextGen/search/allEventLocations",function(data,status){
 					  if(status=="success") { 
 						  var jsonEventLocations = jQuery.parseJSON(data);
 						  var metrosLength =(jsonEventLocations.metros["metro"]).length;
-						  var map = new Object();
-						  
+						  var map = new Object();						  
 						  for(var i=0;i<metrosLength;i++){
 							var region = (jsonEventLocations.metros["metro"][i]).name;
 							var country = (jsonEventLocations.metros["metro"][i]).country;
@@ -147,8 +149,7 @@
 								} else {
 							    	 (map[country]).push(region);
 							}
-						  }
-						  
+						  }						  
 						  var keys = Object.keys(map);
 						  for(var i=0;i<keys.length;i++){				  
 							 $("#country").append('<option value="'+keys[i]+'">'+keys[i]+'</option>');
@@ -157,13 +158,54 @@
 								$("#country").append('<option value="'+regionsArray[j]+'">&nbsp;&nbsp;&nbsp;'+regionsArray[j]+'</option>');								
 								 }
 						 	 }
-					 	 }		    		  
-		    		  
-		    	  	});
-		
+					 	 }
+		    	  	});		
 				});
 		    
 			  
+		    
+		    $(function() {
+			    	var mapOptions;
+			    	mapOptions = {center: new google.maps.LatLng(53.412910,-8.2438), zoom: 1};
+					map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+				});
+		    
+		 
+		    $("#country").change(function(){
+		    	var locationSelected = $(this).val();
+		    
+		    	$.get("/NextGen/search/allEvents/".concat(locationSelected),function(data,status){
+		    		if(status=="success"){
+		    			
+		    			var eventDetails = jQuery.parseJSON(data);	
+		    			
+		    			deleteMarkers();
+		    			
+		    			for(var i=0; i < (eventDetails.events["event"]).length;i++ ){
+		    				
+		    				var event = (eventDetails.events["event"])[i];		    				
+		    				var geo = eventDetails.events["event"][i].venue.location["geo:point"];
+		    				var eventLatLng =  new google.maps.LatLng(geo["geo:lat"] ,geo["geo:long"]);
+		    				var marker = new google.maps.Marker({position: eventLatLng, title: event.title });
+		    				marker.setMap(map);
+		    				markers.push(marker);
+		    				
+		    			}
+		    			
+		    		}
+		    	});
+		    	
+		    	
+		    });
+		    
+		    
+		 // Deletes all markers in the array by removing references to them.
+		    function deleteMarkers() {
+		    	  for (var i = 0; i < markers.length; i++) {
+		    		 markers[i].setMap(null);
+		    	  }
+		    	  markers = [];
+		    	}
 			  
 			});
 	
@@ -266,6 +308,9 @@
 			    <p>
 			    	Country : <select id="country"> </select>
 			    </p>
+			    
+			    <div id="map-canvas"></div>
+			 
 			    
 			  </div>
 			  <div id="tabs-3">

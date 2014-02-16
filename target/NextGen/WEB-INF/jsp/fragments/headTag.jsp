@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -49,8 +49,7 @@ NextGen :: The header tag
     
    -->
     
-  
-	
 	<link rel="stylesheet" href="https://jqueryui.com/jquery-wp-content/themes/jqueryui.com/style.css">
 
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvv1yvsXQiqYrkh_XQBo8TVKuRlaYqjSk&sensor=false"></script>
  

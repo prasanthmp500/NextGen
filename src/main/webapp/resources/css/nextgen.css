@@ -88,3 +88,9 @@ body {
 	border-left: 2px solid white;
 	border-right: 2px solid white;
 }
+
+#map-canvas {
+        height: 400px;
+        width: 100%;
+
+      }
