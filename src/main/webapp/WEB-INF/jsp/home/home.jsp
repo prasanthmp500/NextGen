@@ -164,12 +164,6 @@
 		    
 			  
 		    
-		    $(function() {
-			    	var mapOptions;
-			    	mapOptions = {center: new google.maps.LatLng(53.412910,-8.2438), zoom: 1};
-					map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
-				});
-		    
 		 
 		    $("#country").change(function(){
 		    	var locationSelected = $(this).val();
@@ -186,17 +180,57 @@
 		    				var event = (eventDetails.events["event"])[i];		    				
 		    				var geo = eventDetails.events["event"][i].venue.location["geo:point"];
 		    				var eventLatLng =  new google.maps.LatLng(geo["geo:lat"] ,geo["geo:long"]);
-		    				var marker = new google.maps.Marker({position: eventLatLng, title: event.title });
+		    				var marker = new google.maps.Marker({position: eventLatLng,animation: google.maps.Animation.DROP, title: event.title });
 		    				marker.setMap(map);
+		    				google.maps.event.addListener(marker, 'click',setInfoWindowOnMarker(event, map, marker) );
 		    				markers.push(marker);
-		    				
 		    			}
+		    			
 		    			
 		    		}
 		    	});
 		    	
 		    	
 		    });
+		    
+		   function setInfoWindowOnMarker(event, map, marker) {			   
+			   return function() { getInfoWindow(event).open(map, marker); }
+		   }
+		    
+		    
+		    
+		    function getInfoWindow(event){
+		    	var infowindow =  new google.maps.InfoWindow();
+		    	infowindow.setContent(getContentString(event));
+		    	return infowindow;
+		    }
+		    
+		    
+		    
+		    function getContentString(event){
+		    	
+		    	
+		    	var content = '<div id="content">'+
+		    					'<h1 id="firstHeading" class="firstHeading">'+ event.title +'</h1>'+
+		    					'<p> Artists </p>'+
+		    					'<p>'+ event.artists.headliner + '</p>'+
+		    					'<p> Venue Details </p>'+
+		    					'<p> Venue Name '+ event.venue.name +'  </p>'+
+		    					'<p> Venue Name Location  </p>'+
+		    					'<p> City '+ event.venue.location.city +'  </p>'+
+		    					'<p> Country '+ event.venue.location.country +'  </p>'+
+		    					'<p> Street '+ event.venue.location.street +'  </p>'+
+		    					'<p> Postal Code '+ event.venue.location.postalcode +'  </p>'+
+		    					'<p> Phone Number '+ event.venue.phonenumber +'  </p>'+
+		    					'<p> last fm url  '+ event.venue.url +'  </p>'+
+		    					'<p> website url  '+ event.venue.website +'  </p>'+
+		    					'<p> <img src="'+event.image[3]['#text']+'"> </p>'+
+		    					'<p> website url  '+ event.startDate +'  </p>'+
+		    				    '</div>';
+		    				
+		    	return content;
+		    }
+		    
 		    
 		    
 		 // Deletes all markers in the array by removing references to them.
@@ -206,6 +240,15 @@
 		    	  }
 		    	  markers = [];
 		    	}
+		 
+		 
+		 	$("#searchEventsLink").click(function(event){
+		 		var mapOptions;
+		    	mapOptions = {center: new google.maps.LatLng(51.5072,0.1275), zoom: 4};
+				map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
+		 		$( this ).off(event);
+		 	});
+		 
 			  
 			});
 	
@@ -286,37 +329,33 @@
 			<div id="tabs">
 			 
 			  <ul>
-			    <li><a href="#tabs-1">Search Music</a></li>
-			    <li><a href="#tabs-2">Search Events</a></li>
-			    <li><a href="#tabs-3">Aenean lacinia</a></li>
+			    <li><a href="#tabs-1" id="searchMusicLink">Search Music</a></li>
+			    <li><a href="#tabs-2" id="searchEventsLink">Search Events</a></li>
+			    <li><a href="#tabs-3" id="notYet">Aenean lacinia</a></li>
 			  </ul>
 			  
 			  <div id="tabs-1">
 			    <p>
 			   		<input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
 			    </p>
-			    
-			    <p>
-			   		<div id="showSimilarArtists" class="kc-wrap">
-				    </div>
-				    
-			     </p>
-				
-			    
+			    <div id="showSimilarArtists" class="kc-wrap"></div>
 			  </div>
+
 			  <div id="tabs-2">
+			   
 			    <p>
 			    	Country : <select id="country"> </select>
 			    </p>
-			    
-			    <div id="map-canvas"></div>
 			 
-			    
+			    <div id="map-canvas"></div>
+			  
 			  </div>
+			  
+			  
 			  <div id="tabs-3">
 			    <p></p>
-
 			  </div>
+			  
 			</div>
 
 

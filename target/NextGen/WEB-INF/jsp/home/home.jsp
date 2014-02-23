@@ -21,6 +21,8 @@
 		
 		var map ;
 		
+		var markers = [];
+		
 		$( document ).tooltip();
 		
 		$( "#tabs" ).tabs();
@@ -164,15 +166,86 @@
 		    
 		    $(function() {
 			    	var mapOptions;
-			    	mapOptions = {center: new google.maps.LatLng(53.412910,-8.2438),zoom: 8};
+			    	mapOptions = {center: new google.maps.LatLng(53.412910,-8.2438), zoom: 80};
 					map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 				});
 		    
 		 
 		    $("#country").change(function(){
-		    	alert("test");
+		    	var locationSelected = $(this).val();
+		    
+		    	$.get("/NextGen/search/allEvents/".concat(locationSelected),function(data,status){
+		    		if(status=="success"){
+		    			
+		    			var eventDetails = jQuery.parseJSON(data);	
+		    			
+		    			deleteMarkers();
+		    			
+		    			for(var i=0; i < (eventDetails.events["event"]).length;i++ ){
+		    				
+		    				var event = (eventDetails.events["event"])[i];		    				
+		    				var geo = eventDetails.events["event"][i].venue.location["geo:point"];
+		    				var eventLatLng =  new google.maps.LatLng(geo["geo:lat"] ,geo["geo:long"]);
+		    				var marker = new google.maps.Marker({position: eventLatLng,animation: google.maps.Animation.DROP, title: event.title });
+		    				marker.setMap(map);
+		    				google.maps.event.addListener(marker, 'click',setInfoWindowOnMarker(event, map, marker) );
+		    				markers.push(marker);
+		    			}
+		    			
+		    			
+		    		}
+		    	});
+		    	
+		    	
 		    });
 		    
+		   function setInfoWindowOnMarker(event, map, marker) {			   
+			   return function() { getInfoWindow(event).open(map, marker); }
+		   }
+		    
+		    
+		    
+		    function getInfoWindow(event){
+		    	var infowindow =  new google.maps.InfoWindow();
+		    	infowindow.setContent(getContentString(event));
+		    	return infowindow;
+		    }
+		    
+		    
+		    
+		    function getContentString(event){
+		    	
+		    	
+		    	var content = '<div id="content">'+
+		    					'<h1 id="firstHeading" class="firstHeading">'+ event.title +'</h1>'+
+		    					'<p> Artists </p>'+
+		    					'<p>'+ event.artists.headliner + '</p>'+
+		    					'<p> Venue Details </p>'+
+		    					'<p> Venue Name '+ event.venue.name +'  </p>'+
+		    					'<p> Venue Name Location  </p>'+
+		    					'<p> City '+ event.venue.location.city +'  </p>'+
+		    					'<p> Country '+ event.venue.location.country +'  </p>'+
+		    					'<p> Street '+ event.venue.location.street +'  </p>'+
+		    					'<p> Postal Code '+ event.venue.location.postalcode +'  </p>'+
+		    					'<p> Phone Number '+ event.venue.phonenumber +'  </p>'+
+		    					'<p> last fm url  '+ event.venue.url +'  </p>'+
+		    					'<p> website url  '+ event.venue.website +'  </p>'+
+		    					'<p> <img src="'+event.image[3]['#text']+'"> </p>'+
+		    					'<p> website url  '+ event.startDate +'  </p>'+
+		    				    '</div>';
+		    				
+		    	return content;
+		    }
+		    
+		    
+		    
+		 // Deletes all markers in the array by removing references to them.
+		    function deleteMarkers() {
+		    	  for (var i = 0; i < markers.length; i++) {
+		    		 markers[i].setMap(null);
+		    	  }
+		    	  markers = [];
+		    	}
 			  
 			});
 	
