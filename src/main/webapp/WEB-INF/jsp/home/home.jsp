@@ -10,7 +10,110 @@
 <head> 
   <jsp:include page="../fragments/headTag.jsp"/>
 	
+	
+	<script type="text/javascript">
+	
+	var Page;
+			$(function() {
+				
+				Page = (function() {
 
+					var $navArrows = $('#nav-arrows' ).hide(),
+						$shadow = $( '#shadow' ).hide(),
+						slicebox = $( '#sb-slider' ).slicebox( {
+							onReady : function() {
+
+								$navArrows.show();
+								$shadow.show();
+
+							},
+							orientation : 'r',
+							cuboidsRandom : true,
+							disperseFactor : 30
+						} ),
+						
+						init = function() {
+
+							initEvents();
+							
+						},
+						initEvents = function() {
+
+							// add navigation events
+							$navArrows.children( ':first' ).on( 'click', function() {
+
+								slicebox.next();
+								return false;
+
+							} );
+
+							$navArrows.children( ':last' ).on( 'click', function() {
+								
+								slicebox.previous();
+								return false;
+
+							} );
+
+						};
+
+						return { init : init };
+
+				})();
+
+				Page.init();
+
+			});
+	
+			</script>
+			
+			
+			   <script type="text/javascript">
+			   
+      $(document).ready(
+    		  
+    function () {
+    	
+        var carousel = $("#carousel").waterwheelCarousel({
+          flankingItems: 3,
+          movingToCenter: function ($item) {
+            $('#callback-output').prepend('movingToCenter: ' + $item.attr('id') + '<br/>');
+          },
+          movedToCenter: function ($item) {
+            $('#callback-output').prepend('movedToCenter: ' + $item.attr('id') + '<br/>');
+          },
+          movingFromCenter: function ($item) {
+            $('#callback-output').prepend('movingFromCenter: ' + $item.attr('id') + '<br/>');
+          },
+          movedFromCenter: function ($item) {
+            $('#callback-output').prepend('movedFromCenter: ' + $item.attr('id') + '<br/>');
+          },
+          clickedCenter: function ($item) {
+            $('#callback-output').prepend('clickedCenter: ' + $item.attr('id') + '<br/>');
+          }
+        });
+
+        $('#prev').bind('click', function () {
+          carousel.prev();
+          return false
+        });
+
+        $('#next').bind('click', function () {
+          carousel.next();
+          return false;
+        });
+
+        $('#reload').bind('click', function () {
+          newOptions = eval("(" + $('#newoptions').val() + ")");
+          carousel.reload(newOptions);
+          return false;
+        });
+
+      });
+    </script>
+			
+			
+			
+			
 	
 	<script type="text/javascript">
 	
@@ -248,6 +351,92 @@
 				map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 		 		$( this ).off(event);
 		 	});
+		 	
+		 	
+		 	 $("#movieName").keyup(function(){
+					var movies = new Array();
+					var movieNameInput = $(this);
+					var input = $(this).val();
+			
+		            if(input.length > 3 ){
+					
+						 $.get("/NextGen/searchMovie/search/".concat(input),function(data,status){
+							      if(status=="success"){
+						    	      var jsonObject = jQuery.parseJSON(data);		
+							    	  
+						    	      var arrayResultLength = (jsonObject["movies"]).length; 
+									  
+						    	  	  for(var i=0;i<arrayResultLength;i++){
+						    	    	  movies[i] = jsonObject["movies"][i].title;  				    	      
+									  }
+									  
+						    	  	  	$(movieNameInput).autocomplete({source: movies});					    	  	  
+							     	 
+									 }
+									 
+						   		 });
+							}		  
+					  	});	
+		 	
+		 	 
+		 	$("#showMovieDetails").click(function(){
+		 		
+		 	  var input = $("#movieName").val();
+	
+		 	  if(input.length > 3 ){
+		 		
+		 		  $.get("/NextGen/searchMovie/search/".concat(input), function(data,status){
+		 			 if(status=="success"){
+		 			
+		 			     var jsonObject = jQuery.parseJSON(data);		
+				         var arrayResultLength = (jsonObject["movies"]).length; 
+			    	     
+				        // $("#sliceBoxWrapper").append("<ul id='sb-slider' class='slider'>");
+				         
+				       //   $("#sb-slider").empty();
+				        
+				       
+				   //    var list = $("#sliceBoxWrapper").prepend('<ul id="sb-slider" class="sb-slider"></ul>');
+							
+				            
+				   			$("#carousel").empty();
+				   			for(var i=0;i<arrayResultLength;i++){
+			    	    	 
+				        	var img = $('<img>'); //Equivalent: $(document.createElement('img'))
+			    	    	img.attr('src', (jsonObject["movies"][i]).posters.original);
+			    	    	img.height(300);
+			    	    	img.width(300);
+			    	    	$("#carousel").append(img);
+			    	    	 
+			    	     }
+			    	   
+				   			$("#carousel").waterwheelCarousel({
+				   	          flankingItems: 3,
+				   	          movingToCenter: function ($item) {
+				   	            $('#callback-output').prepend('movingToCenter: ' + $item.attr('id') + '<br/>');
+				   	          },
+				   	          movedToCenter: function ($item) {
+				   	            $('#callback-output').prepend('movedToCenter: ' + $item.attr('id') + '<br/>');
+				   	          },
+				   	          movingFromCenter: function ($item) {
+				   	            $('#callback-output').prepend('movingFromCenter: ' + $item.attr('id') + '<br/>');
+				   	          },
+				   	          movedFromCenter: function ($item) {
+				   	            $('#callback-output').prepend('movedFromCenter: ' + $item.attr('id') + '<br/>');
+				   	          },
+				   	          clickedCenter: function ($item) {
+				   	            $('#callback-output').prepend('clickedCenter: ' + $item.attr('id') + '<br/>');
+				   	          }
+				   	        });
+			    	 
+			    	     
+			    	     
+		 			 }
+		 		  });
+		 	  	}
+		 	});
+		 	
+		 	
 		 
 			  
 			});
@@ -301,6 +490,9 @@
       
     </script>
 	
+	
+		</script>
+	
 
 	
 	
@@ -331,7 +523,7 @@
 			  <ul>
 			    <li><a href="#tabs-1" id="searchMusicLink">Search Music</a></li>
 			    <li><a href="#tabs-2" id="searchEventsLink">Search Events</a></li>
-			    <li><a href="#tabs-3" id="notYet">Aenean lacinia</a></li>
+			    <li><a href="#tabs-3" id="notYet">Search Movies</a></li>
 			  </ul>
 			  
 			  <div id="tabs-1">
@@ -353,7 +545,18 @@
 			  
 			  
 			  <div id="tabs-3">
-			    <p></p>
+			    <p>
+			   		<input type="search" id="movieName"> <button id="showMovieDetails"> Search Movies  </button>
+			    </p>
+			    
+
+			  <div id="carousel">
+			  
+			  
+			  
+			  </div>
+			    
+			    
 			  </div>
 			  
 			</div>

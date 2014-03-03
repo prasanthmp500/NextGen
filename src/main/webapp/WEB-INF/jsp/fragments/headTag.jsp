@@ -52,4 +52,33 @@ NextGen :: The header tag
 	<link rel="stylesheet" href="https://jqueryui.com/jquery-wp-content/themes/jqueryui.com/style.css">
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvv1yvsXQiqYrkh_XQBo8TVKuRlaYqjSk&sensor=false"></script>
+	
+	<!-- for the slice box	 -->	
+	
+	
+	<c:set var="sliceBoxCss1" value="/resources/css/slicebox.css"> </c:set> 
+    <link type="text/css" href="<%= request.getContextPath()%>${sliceBoxCss1}" rel="stylesheet">
+	
+	<c:set var="sliceBoxCss2" value="/resources/css/sliceboxcustom.css"> </c:set> 
+    <link type="text/css" href="<%= request.getContextPath()%>${sliceBoxCss2}" rel="stylesheet">
+	
+	<c:set var="sliceBoxCss3" value="/resources/css/sliceboxdemo.css"> </c:set> 
+    <link type="text/css" href="<%= request.getContextPath()%>${sliceBoxCss3}" rel="stylesheet">
+    
+    
+    <c:set var="sliceBoxJS1" value="/resources/javascript/slicebox.modernizr.custom.46884.js"> </c:set>
+    <script src="<%= request.getContextPath()%>${sliceBoxJS1}"></script>
+   
+    <c:set var="sliceBoxJS2" value="/resources/javascript/jquery.slicebox.js"> </c:set>
+    <script src="<%= request.getContextPath()%>${sliceBoxJS2}"></script> 
+    
+    <!-- end of slice box -->
+    
+    <c:set var="waterWheelCarouselJS" value="/resources/javascript/jquery.waterwheelCarousel.min.js"> </c:set>
+    <script src="<%= request.getContextPath()%>${waterWheelCarouselJS}"></script> 
+    
+     <c:set var="waterWheelCarouselCSS" value="/resources/css/waterwheelcarousel.css"> </c:set> 
+    <link type="text/css" href="<%= request.getContextPath()%>${waterWheelCarouselCSS}" rel="stylesheet">
+    
+    
  
