@@ -32,7 +32,7 @@ public class ControllerNextgen {
 		RestTemplate restTemplate = new RestTemplate();	
 		String result = restTemplate.getForObject(url, String.class, vars);
 			
-		System.out.println(result);
+
 		
 	    ModelAndView mav = new ModelAndView("test/test");
 	    mav.addObject("jsonresult", result);

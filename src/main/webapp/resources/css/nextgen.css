@@ -1,13 +1,54 @@
-body {
+html, body {
+	width:100%;
+	height: 100%;
 	margin-left: 0%;
 	margin-right: 0%;
 	margin-top: 0%;
-	padding: 0;
 	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
-	font-size: 62.5%;
+	font-size: 90%;
 	background-color: #F0F0F0;/*#FAF8F8;*/
-	border: 0px;
+	background-image:url("../images/backgroundImage.png");
+	background-size: cover;
+    background-repeat: no-repeat;
 }
+
+
+
+
+#profilePhotoDiv {
+	position:absolute;
+	width:25%;
+	height:100%;
+	border:thick;
+    margin-top: 2px;
+    margin-left:2px;
+    margin-right:2px;
+	margin-bottom: 2px;
+}
+
+#profileInfoDiv {
+	width:75%
+	margin-top: 2px;
+    margin-left:2px;
+    margin-right:2px;
+	margin-bottom: 2px;
+	float:right;
+}
+
+#infoDiv{
+	
+	position: relative;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 0;
+	float:left;
+	left:25%;
+	width: 100%;
+	background-color: #FF0000; /*#415473; Dark Blue Color*/
+	margin-right: auto;
+	margin-left: auto;
+}
+
 
 
 #wrapper {
@@ -15,14 +56,17 @@ body {
 	margin-top: 0px;
 	margin-bottom: 0px;
 	padding: 0;
-	width: 100%;
-	height: 100%;
+	width: 90%;
+	height: 90%;
+	margin-top: 2px;
+	margin-bottom: 2px;
 	background-color: #F0F0F0; /*#415473; Dark Blue Color*/
-	margin-right: auto;
-	margin-left: auto;
-	border-top: 2px solid white;
-	border-left: 2px solid white;
-	border-right: 2px solid white;
+	margin: 0 auto;
+	
+	
+/*  border-top: 2px solid white; */	
+/*	border-left: 2px solid white; */	
+/*	border-right: 2px solid white; */
 }
 
 #header {
@@ -35,9 +79,9 @@ body {
 	background-color: #F0F0F0; /*#415473; Dark Blue Color*/
 	margin-right: auto;
 	margin-left: auto;
-	border-top: 2px solid white;
-	border-left: 2px solid white;
-	border-right: 2px solid white;
+/*  border-top: 2px solid white; */	
+/*	border-left: 2px solid white; */	
+/*	border-right: 2px solid white; */
 }
 
 #leftpanel {
@@ -51,9 +95,9 @@ body {
 	background-color: #F0F0F0; /*#415473; Dark Blue Color*/
 	margin-right: auto;
 	margin-left: auto;
-	border-top: 2px solid white;
-	border-left: 2px solid white;
-	border-right: 2px solid white;
+/*  border-top: 2px solid white; */	
+/*	border-left: 2px solid white; */	
+/*	border-right: 2px solid white; */
 }
 
 #rightpanel {
@@ -68,9 +112,9 @@ body {
 	background-color: #F0F0F0; /*#415473; Dark Blue Color*/
 	margin-right: auto;
 	margin-left: auto;
-	border-top: 2px solid white;
-	border-left: 2px solid white;
-	border-right: 2px solid white;
+/*  border-top: 2px solid white; */	
+/*	border-left: 2px solid white; */	
+/*	border-right: 2px solid white; */	
 }
 
 #footer {
@@ -84,9 +128,9 @@ body {
 	background-color: #F0F0F0; /*#415473; Dark Blue Color*/
 	margin-right: auto;
 	margin-left: auto;
-	border-top: 2px solid white;
-	border-left: 2px solid white;
-	border-right: 2px solid white;
+/*	    border-top: 2px solid white; */
+/*		border-left: 2px solid white;  */
+/*		border-right: 2px solid white; */
 }
 
 #map-canvas {

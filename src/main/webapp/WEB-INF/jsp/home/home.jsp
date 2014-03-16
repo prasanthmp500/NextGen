@@ -9,7 +9,8 @@
 
 <head> 
   <jsp:include page="../fragments/headTag.jsp"/>
-	
+	<c:set var="nextCss" value="/resources/css/nextgen.css" />
+    <link type="text/css" href="<%= request.getContextPath()%>${nextCss}" rel="stylesheet"/>  
 	
 	<script type="text/javascript">
 	
@@ -459,7 +460,7 @@
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '225',
-          width: '350',
+          width: '400',
           videoId: 'M7lc1UVf-VE',
           events: {
             'onReady': onPlayerReady,
@@ -491,35 +492,45 @@
     </script>
 	
 	
-		</script>
 	
 
+	
 	
 	
 	
 	 <div id="wrapper">
 	 
 		<div id="header">
+				
+				<!-- 
 				<img src="resources/images/banner-graphic.png" />
-				<p> NextGeneration Entertainment </p>	
+				 -->
+				
+				
+				
+				<div id="profilePhotoDiv">
+					<img src="${mymap['image']}" alt="noimage" height="100" width="100">
+			    	<p> Welcome : <c:out value="${mymap['profilename']}"/> </p>	
+			    </div>
+			   
+			   <div id="profileInfoDiv">
+			  		<a href="<c:url value="/signout"/>"> Sign out</a>
+				</div>
+				
 		</div>
 		
 		<div id="leftpanel">
 			<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     		<div id="player"></div>
     		
-    		
-    		
 		</div>
 		
 		
 		<div id="rightpanel">
-
 			
 			
 			<!--  -->
 			<div id="tabs">
-			 
 			  <ul>
 			    <li><a href="#tabs-1" id="searchMusicLink">Search Music</a></li>
 			    <li><a href="#tabs-2" id="searchEventsLink">Search Events</a></li>
@@ -528,44 +539,42 @@
 			  
 			  <div id="tabs-1">
 			    <p>
-			   		<input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
+			   	  Artist Name: <input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
 			    </p>
+			
 			    <div id="showSimilarArtists" class="kc-wrap"></div>
 			  </div>
 
 			  <div id="tabs-2">
-			   
 			    <p>
 			    	Country : <select id="country"> </select>
 			    </p>
-			 
 			    <div id="map-canvas"></div>
-			  
+			
 			  </div>
 			  
 			  
 			  <div id="tabs-3">
 			    <p>
-			   		<input type="search" id="movieName"> <button id="showMovieDetails"> Search Movies  </button>
+			   	Movie Name:	<input type="search" id="movieName"> <button id="showMovieDetails"> Search Movies </button>
 			    </p>
-			    
-
-			  <div id="carousel">
-			  
-			  
-			  
-			  </div>
-			    
-			    
+			    <div id="carousel">
+			  	</div>
 			  </div>
 			  
+			  
+			  	<div id="infoDiv">
+				Hello how ar eyou
 			</div>
-
-
-
-  
+			  
+			</div>  
 
 			<!--  -->	
+			
+		
+			
+			
+			
 			
 			
 			
