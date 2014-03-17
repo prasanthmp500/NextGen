@@ -10,11 +10,56 @@ html, body {
 	background-image:url("../images/backgroundImage.png");
 	background-size: cover;
     background-repeat: no-repeat;
+    border-radius:5px;
+}
+
+
+
+
+#profilePhotoDiv {
+	border-radius:5px;
+	position:absolute;
+	width:25%;
+	height:100%;
+	border:thick;
+    margin-top: 2px;
+    margin-left:2px;
+    margin-right:2px;
+	margin-bottom: 2px;
+}
+
+#profileInfoDiv {
+	border-radius:5px;
+	width:75%
+	margin-top: 2px;
+    margin-left:2px;
+    margin-right:2px;
+	margin-bottom: 2px;
+	float:right;
+}
+
+#infoDiv{
+	border-radius:5px;
+	padding-left:2px;
+	padding-right:2px;
+	padding-top:2px;
+	padding-bottom:2px;
+	
+	position: relative;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding: 0;
+	width: 100%;
+    border:2px;
+	background-color: #F0F0F0; /*#415473; Dark Blue Color*/
+	margin-right: auto;
+	margin-left: auto;
 }
 
 
 
 #wrapper {
+	border-radius:5px;
 	position: relative;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -33,6 +78,7 @@ html, body {
 }
 
 #header {
+	border-radius:5px;
 	position: absolute;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -48,6 +94,7 @@ html, body {
 }
 
 #leftpanel {
+	border-radius:5px;
 	position: absolute;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -64,6 +111,7 @@ html, body {
 }
 
 #rightpanel {
+	border-radius:5px;
 	position: absolute;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -80,7 +128,13 @@ html, body {
 /*	border-right: 2px solid white; */	
 }
 
+
+
+
+
+
 #footer {
+	border-radius:5px;
 	position: absolute;
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -97,8 +151,6 @@ html, body {
 }
 
 #map-canvas {
-	
 		height: 400px;
         width: 100%;
-
       }

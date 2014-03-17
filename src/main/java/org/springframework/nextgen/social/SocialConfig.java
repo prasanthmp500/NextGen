@@ -38,7 +38,7 @@ public class SocialConfig {
 	
      // for google app engine
 	
-	 // private static String FACEBOOK_CLIENTID= "1404001236531536";
+	// private static String FACEBOOK_CLIENTID= "1404001236531536";
 		
     // private static String  FACEBOOK_CLIENTSECRET = "51c1e65b3f1cff6c6ef9895201e0a5d0";
 		
@@ -98,6 +98,14 @@ public class SocialConfig {
 //	}
 
 	
+	
+//	  @Bean
+//    public ConnectController connectController() {
+//        ConnectController controller = new ConnectController(
+//            connectionFactoryLocator(), connectionRepository());
+//        controller.setApplicationUrl("entertainmentunlimited001.appspot.com/home");
+//        return controller;
+//    }
 	
 	  @Bean
 	    public ConnectController connectController() {

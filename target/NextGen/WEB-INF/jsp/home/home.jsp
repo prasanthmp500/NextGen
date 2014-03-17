@@ -152,7 +152,7 @@
 			var artistNameInput = $(this);
 			var input = $(this).val();
             if(input.length > 3 ){
-				 $.get("/NextGen/search/artist/".concat(input),function(data,status){
+				 $.get("/search/artist/".concat(input),function(data,status){
 					      if(status=="success"){
 				    	      var jsonObject = jQuery.parseJSON(data);							    	  
 				    	      var arrayResultLength = (jsonObject["results"]["artistmatches"]["artist"]).length; 
@@ -171,14 +171,14 @@
 		    	var youtTubePlaylistId = "";
 		    	if(input.length > 0){
 		    		<!-- -->
-					 $.get("/NextGen/searchYoutube/playlist/".concat(input),function(data,status){
+					 $.get("/searchYoutube/playlist/".concat(input),function(data,status){
 						  if(status=="success"){
 				    	      var jsonObjectPlayList = jQuery.parseJSON(data);
 				    	      youtTubePlaylistId = jsonObjectPlayList.items[0].id.playlistId;
 				    	      
 				    	      // get the video ids in the playlist 
 				    	   
-				    	      $.get("/NextGen/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
+				    	      $.get("/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
 				    	    	  if(status=="success"){
 				    	    		  var jsonObjectPlayListItems = jQuery.parseJSON(data);	  
 				    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
@@ -198,7 +198,7 @@
 		   			var input = $("#artistName").val();
 		   			if(input.length > 3){
 		   			
-		   				$.get("/NextGen/search/similarArtist/".concat(input),function(data,status){
+		   				$.get("/search/similarArtist/".concat(input),function(data,status){
 		   					if(status=="success"){
 		   						var jsonObjectSimilarArtists = jQuery.parseJSON(data);
 		   						var showDiv = $('#showSimilarArtists');
@@ -238,7 +238,7 @@
 		    
 		    
 		    $(function(){		    	
-		    	  $.get("/NextGen/search/allEventLocations",function(data,status){
+		    	  $.get("/search/allEventLocations",function(data,status){
 					  if(status=="success") { 
 						  var jsonEventLocations = jQuery.parseJSON(data);
 						  var metrosLength =(jsonEventLocations.metros["metro"]).length;
@@ -272,7 +272,7 @@
 		    $("#country").change(function(){
 		    	var locationSelected = $(this).val();
 		    
-		    	$.get("/NextGen/search/allEvents/".concat(locationSelected),function(data,status){
+		    	$.get("/search/allEvents/".concat(locationSelected),function(data,status){
 		    		if(status=="success"){
 		    			
 		    			var eventDetails = jQuery.parseJSON(data);	
@@ -361,7 +361,7 @@
 			
 		            if(input.length > 3 ){
 					
-						 $.get("/NextGen/searchMovie/search/".concat(input),function(data,status){
+						 $.get("/searchMovie/search/".concat(input),function(data,status){
 							      if(status=="success"){
 						    	      var jsonObject = jQuery.parseJSON(data);		
 							    	  
@@ -371,7 +371,13 @@
 						    	    	  movies[i] = jsonObject["movies"][i].title;  				    	      
 									  }
 									  
-						    	  	  	$(movieNameInput).autocomplete({source: movies});					    	  	  
+						    	  	var uniqueMovieNames = new Array();
+						    	  	$.each(movies, function(i, el){
+						    	  	    if($.inArray(el, uniqueMovieNames) === -1) uniqueMovieNames.push(el);
+						    	  	});
+						    	  	  
+						    	  	  
+						    	  	  	$(movieNameInput).autocomplete({source: uniqueMovieNames});						    	  	  
 							     	 
 									 }
 									 
@@ -386,7 +392,7 @@
 	
 		 	  if(input.length > 3 ){
 		 		
-		 		  $.get("/NextGen/searchMovie/search/".concat(input), function(data,status){
+		 		  $.get("/searchMovie/search/".concat(input), function(data,status){
 		 			 if(status=="success"){
 		 			
 		 			     var jsonObject = jQuery.parseJSON(data);		
@@ -460,7 +466,7 @@
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '225',
-          width: '350',
+          width: '400',
           videoId: 'M7lc1UVf-VE',
           events: {
             'onReady': onPlayerReady,
@@ -506,13 +512,16 @@
 				<img src="resources/images/banner-graphic.png" />
 				 -->
 				
-				<p> NextGeneration Entertainment </p>	
-
-				<c:out value="${mymap['profilename']}"/>
-	
-				<img src="${mymap['image']}" alt="noimage" height="100" width="100">
+				
+				
+				<div id="profilePhotoDiv">
+					<img src="${mymap['image']}" alt="noimage" height="100" width="100">
+			    	<p> Welcome : <c:out value="${mymap['profilename']}"/> </p>	
+			    </div>
 			   
-				<a href="<c:url value="/signout"/>"> Sign out</a>
+			   <div id="profileInfoDiv">
+			  		<a href="<c:url value="/signout"/>"> Sign out</a>
+				</div>
 				
 		</div>
 		
@@ -559,9 +568,19 @@
 			  	</div>
 			  </div>
 			  
+			  
+			  	<div id="infoDiv">
+				Hello how ar eyou
+			</div>
+			  
 			</div>  
 
 			<!--  -->	
+			
+		
+			
+			
+			
 			
 			
 			
