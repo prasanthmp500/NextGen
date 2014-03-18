@@ -31,19 +31,20 @@ public class SocialConfig {
 	
 	
 	// for local 
-	private static String FACEBOOK_CLIENTID= "606662689417866";
+	 private static String FACEBOOK_CLIENTID= "606662689417866";
 	
-    private static String  FACEBOOK_CLIENTSECRET = "a60ccb1580975f2ce877d2e5fbf84818";
+     private static String  FACEBOOK_CLIENTSECRET = "a60ccb1580975f2ce877d2e5fbf84818";
 		
 	
      // for google app engine
 	
 	// private static String FACEBOOK_CLIENTID= "1404001236531536";
 		
-    // private static String  FACEBOOK_CLIENTSECRET = "51c1e65b3f1cff6c6ef9895201e0a5d0";
+   // private static String  FACEBOOK_CLIENTSECRET = "51c1e65b3f1cff6c6ef9895201e0a5d0";
 		
      
-     
+   
+    
 	
 	@Inject
 	private DataSource dataSource;
@@ -111,7 +112,7 @@ public class SocialConfig {
 	    public ConnectController connectController() {
 	        ConnectController controller = new ConnectController(
 	            connectionFactoryLocator(), connectionRepository());
-	        controller.setApplicationUrl("http://localhost:8080/NextGen/home");
+	       // controller.setApplicationUrl("http://localhost:8080/NextGen/home");
 	        return controller;
 	    }
 	

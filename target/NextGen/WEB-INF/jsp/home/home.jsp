@@ -9,8 +9,9 @@
 
 <head> 
   <jsp:include page="../fragments/headTag.jsp"/>
-	<c:set var="nextCss" value="/resources/css/nextgen.css" />
+	<c:set var="nextCss" value="/resources/css.css" />
     <link type="text/css" href="<%= request.getContextPath()%>${nextCss}" rel="stylesheet"/>  
+	
 	
 	<script type="text/javascript">
 	
@@ -76,6 +77,7 @@
     	
         var carousel = $("#carousel").waterwheelCarousel({
           flankingItems: 3,
+          linkHandling:2,
           movingToCenter: function ($item) {
             $('#callback-output').prepend('movingToCenter: ' + $item.attr('id') + '<br/>');
           },
@@ -122,6 +124,8 @@
 	
 	
 	$(document).ready(function(){
+		
+		var  movieMap;
 		
 		var map ;
 		
@@ -237,6 +241,9 @@
 		   		 });
 		    
 		    
+   			
+		    
+		    
 		    $(function(){		    	
 		    	  $.get("/search/allEventLocations",function(data,status){
 					  if(status=="success") { 
@@ -313,24 +320,41 @@
 		    
 		    function getContentString(event){
 		    	
+			    	var eventTag = '';
+			    	if( typeof event.tags!= "undefined" ){
+			    		if( typeof event.tags["tag"] != "undefined"){
+				    		if(typeof (event.tags["tag"]).length != "undefined" ) {
+				    			for(var i=0;i<event.tags["tag"].length;i++  ){
+					    			eventTag = eventTag +' ' +event.tags["tag"][i];
+					    		}
+				    		} else {
+				    			eventTag = event.tags.tag;
+				    		}
+				    	}
+			    	}
 		    	
-		    	var content = '<div id="content">'+
-		    					'<h1 id="firstHeading" class="firstHeading">'+ event.title +'</h1>'+
-		    					'<p> Artists </p>'+
-		    					'<p>'+ event.artists.headliner + '</p>'+
-		    					'<p> Venue Details </p>'+
-		    					'<p> Venue Name '+ event.venue.name +'  </p>'+
-		    					'<p> Venue Name Location  </p>'+
-		    					'<p> City '+ event.venue.location.city +'  </p>'+
-		    					'<p> Country '+ event.venue.location.country +'  </p>'+
-		    					'<p> Street '+ event.venue.location.street +'  </p>'+
-		    					'<p> Postal Code '+ event.venue.location.postalcode +'  </p>'+
-		    					'<p> Phone Number '+ event.venue.phonenumber +'  </p>'+
-		    					'<p> last fm url  '+ event.venue.url +'  </p>'+
-		    					'<p> website url  '+ event.venue.website +'  </p>'+
-		    					'<p> <img src="'+event.image[3]['#text']+'"> </p>'+
-		    					'<p> website url  '+ event.startDate +'  </p>'+
+		    	
+		    		var content = '<div id="content">'+
+		    						'<h1 id="firstHeading" class="firstHeading">'+ event.title +'</h1>'+
+		    						'<p> <span style="font-weight:bold;text-decoration:underline"> Artists  </span></p>'+
+		    						'<p> <span style="font-weight:bold"> Head Liner  </span>'+ event.artists.headliner + '</p>'+
+		    						'<p> <span style="font-weight:bold;text-decoration:underline"> Venue Details </span> </p>'+
+		    						'<p> <span style="font-weight:bold">Venue Name: </span>'+ event.venue.name +'  </p>'+
+		    						'<p> <span style="font-weight:bold;text-decoration:underline"> Venue Name Location </span></p>'+
+		    						'<p> <span style="font-weight:bold">City: </span>'+ event.venue.location.city +'  </p>'+
+		    						'<p> <span style="font-weight:bold">Country: </span>'+ event.venue.location.country +'  </p>'+
+		    						'<p> <span style="font-weight:bold">Street: </span>'+ event.venue.location.street +'  </p>'+
+		    						'<p> <span style="font-weight:bold">Postal Code: </span>'+ event.venue.location.postalcode +'  </p>'+
+		    						'<p> <span style="font-weight:bold">Phone Number: </span>'+ event.venue.phonenumber +'  </p>'+
+		    						'<p> <span style="font-weight:bold">Last fm url: </span>'+ event.venue.url +'  </p>'+
+		    						'<p> <span style="font-weight:bold">Website url: </span>'+ event.venue.website +'  </p>'+
+		    						'<p> <img src="'+event.image[3]['#text']+'"> </p>'+
+		    						'<p> <span style="font-weight:bold"> Event Date: </span>'+ event.startDate +' </p>'+
+		    						'<p> <span style="font-weight:bold">Tags: </span>'+ eventTag  +'</p>'+
 		    				    '</div>';
+		    				    
+		    				    
+		    				    
 		    				
 		    	return content;
 		    }
@@ -348,7 +372,7 @@
 		 
 		 	$("#searchEventsLink").click(function(event){
 		 		var mapOptions;
-		    	mapOptions = {center: new google.maps.LatLng(51.5072,0.1275), zoom: 4};
+		    	mapOptions = {center: new google.maps.LatLng(51.5072,0.1275), zoom: 1};
 				map = new google.maps.Map(document.getElementById("map-canvas"),mapOptions);
 		 		$( this ).off(event);
 		 	});
@@ -388,6 +412,9 @@
 		 	 
 		 	$("#showMovieDetails").click(function(){
 		 		
+		 	  $("#infoDiv").empty();
+				  
+		 		
 		 	  var input = $("#movieName").val();
 	
 		 	  if(input.length > 3 ){
@@ -397,23 +424,49 @@
 		 			
 		 			     var jsonObject = jQuery.parseJSON(data);		
 				         var arrayResultLength = (jsonObject["movies"]).length; 
-			    	     
+				         movieMap = new Object();
 				        // $("#sliceBoxWrapper").append("<ul id='sb-slider' class='slider'>");
 				         
 				       //   $("#sb-slider").empty();
 				        
 				       
-				   //    var list = $("#sliceBoxWrapper").prepend('<ul id="sb-slider" class="sb-slider"></ul>');
+				   	//    var list = $("#sliceBoxWrapper").prepend('<ul id="sb-slider" class="sb-slider"></ul>');
 							
 				            
 				   			$("#carousel").empty();
 				   			for(var i=0;i<arrayResultLength;i++){
 			    	    	 
-				        	var img = $('<img>'); //Equivalent: $(document.createElement('img'))
-			    	    	img.attr('src', (jsonObject["movies"][i]).posters.original);
-			    	    	img.height(300);
-			    	    	img.width(300);
-			    	    	$("#carousel").append(img);
+				        		var img = $('<img>'); //Equivalent: $(document.createElement('img'))
+			    	    		var movieItem = (jsonObject["movies"][i]);
+				        	    img.attr('src', (jsonObject["movies"][i]).posters.original);
+				        		img.height(240);
+			    	    		img.width(180);
+			    	    		var id = movieItem.id;
+			    	    		img.attr( "id", id);
+			    	    		
+			    	    		var movie_title = movieItem.title;
+			    	    		var movie_year = movieItem.year;
+			    	    		var movie_mpa_rating = movieItem.mpaa_rating;
+			    	    		var movie_runtime = movieItem.runtime;
+			    	    		var movie_critics_consensus = movieItem.critics_consensus; 
+			    	    		var movie_cast = '';
+			    	    		
+			    	    		if(typeof movieItem.abridged_cast != "undefined" ) {
+			    	    			for(var j=0;j<movieItem.abridged_cast.length;j++) {
+			    	    				
+			    	    				movie_cast = movie_cast + ''+ movieItem.abridged_cast[j].name +'|';
+				    	    		
+			    	    			}
+			    	    		}
+			    	    		
+			    	    		movieMap[id] = new Movie(id,movie_title,movie_year,movie_mpa_rating,movie_runtime,movie_critics_consensus,movie_cast );
+			    	    		
+			    	    		img.click(function(e){
+			    	    			showMovieInfoInDetail(e);
+			    	    		});
+			    	    		
+			    	    		
+			    	    		$("#carousel").append($(img));
 			    	    	 
 			    	     }
 			    	   
@@ -444,9 +497,88 @@
 		 	});
 		 	
 		 	
-		 
+		  function showMovieInfoInDetail(event) {
 			  
-			});
+			  var movieToDisplay =  movieMap[event.currentTarget.id]; 
+			  
+			  var infoDivTag =  $("#infoDiv");
+			  infoDivTag.empty();
+			  
+			  
+			  var titleTag = $('<p></p>');
+			  titleTag.append('<span style="font-weight:bold;text-decoration:underline">'+  movieToDisplay.title() + '</span>');
+			  infoDivTag.append(titleTag);
+			  
+			  
+			  var releaseYearTag = $('<p></p>');
+			  releaseYearTag.append('<span style="font-weight:bold"> Released : </span>'+ movieToDisplay.releaseYear()+' ');
+			  infoDivTag.append(releaseYearTag);
+			  
+			  
+			  var mpaaTag = $('<p></p>');
+			  mpaaTag.append('<span style="font-weight:bold"> MPAA Rating : </span>'+ movieToDisplay.mpaaRating()+' ');
+			  infoDivTag.append(mpaaTag);
+			  
+			  
+			  var runtimeTag = $('<p></p>');
+			  runtimeTag.append('<span style="font-weight:bold"> Duration : </span>'+ movieToDisplay.runtime()+' (Minutes)');
+			  infoDivTag.append(runtimeTag);
+			  
+			 
+			  
+			  var criticsConsensusTag = $('<p></p>');
+			  criticsConsensusTag.append('<span style="font-weight:bold"> Critics Consensus : </span>'+ movieToDisplay.criticsConsensus()+' ');
+			  infoDivTag.append(criticsConsensusTag);
+			  
+			  
+			  
+			  var castTag = $('<p></p>');
+			  castTag.append('<span style="font-weight:bold"> Movie Cast : </span>'+ movieToDisplay.movieCast()+' ');
+			  infoDivTag.append(castTag);
+			  
+			  
+		  }
+		  
+		  
+		  function Movie (id,movie_title,movie_year,movie_mpaa_rating,movie_runtime,movie_critics_consensus,movie_cast ){
+			  this.id = id;
+			  this.movie_title = movie_title;
+			  this.movie_year = movie_year;
+			  this.movie_mpaa_rating = movie_mpaa_rating;
+			  this.movie_runtime = movie_runtime;
+			  this.movie_critics_consensus = movie_critics_consensus;
+			  this.movie_cast = movie_cast;
+		  }
+		  
+		  
+		  Movie.prototype.title = function(){
+		      return this.movie_title;
+		  }
+
+		  
+		  Movie.prototype.releaseYear = function(){
+		      return this.movie_year;
+		  }
+		  
+		  Movie.prototype.mpaaRating = function(){
+		      return this.movie_mpaa_rating;
+		  }
+		  
+		  Movie.prototype.runtime = function(){
+		      return this.movie_runtime;
+		  }
+		 	
+		  
+		  Movie.prototype.criticsConsensus = function(){
+		      return this.movie_critics_consensus;
+		  }
+		  
+		  
+		  Movie.prototype.movieCast = function(){
+		      return this.movie_cast;
+		  }
+			  
+		});
 	
 	</script>
 </head>	
@@ -564,20 +696,24 @@
 			    <p>
 			   	Movie Name:	<input type="search" id="movieName"> <button id="showMovieDetails"> Search Movies </button>
 			    </p>
+			    
+				<div id="infoDiv">
+				</div>
+			    
 			    <div id="carousel">
 			  	</div>
+			  		
 			  </div>
 			  
 			  
-			  	<div id="infoDiv">
-				Hello how ar eyou
-			</div>
+			  
 			  
 			</div>  
 
 			<!--  -->	
 			
-		
+			
+	 	
 			
 			
 			
@@ -588,6 +724,8 @@
 		</div>
 		 
 	 	<div id="footer">
+	 
+				
 			
 		</div>
 	 

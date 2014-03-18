@@ -173,30 +173,10 @@
 		    	var input = $("#artistName").val();
 		    	var youtTubePlaylistId = "";
 		    	if(input.length > 0){
-		    		<!-- -->
-					 $.get("/NextGen/searchYoutube/playlist/".concat(input),function(data,status){
-						  if(status=="success"){
-				    	      var jsonObjectPlayList = jQuery.parseJSON(data);
-				    	      youtTubePlaylistId = jsonObjectPlayList.items[0].id.playlistId;
-				    	      
-				    	      // get the video ids in the playlist 
-				    	   
-				    	      $.get("/NextGen/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
-				    	    	  if(status=="success"){
-				    	    		  var jsonObjectPlayListItems = jQuery.parseJSON(data);	  
-				    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
-				    	    		    var videoId = new Array();
-				    	    		    for(var i=0;i<playListItemsArray.length;i++){
-				    	    		    	videoId[i] = playListItemsArray[i].snippet.resourceId.videoId
-				    	    		    }
-				    	  
-				    	    		    player.loadPlaylist(videoId)
-				    	    		    player.playVideo();
-				    	    	  }
-				    	      });
-					     	 }	
-				   		 });
+		    		// play selected input artist name in youtube 
+		    			playYouTubeArtistPlayList(input);
 		    		}
+		    	
 		   		 }).click(function(){
 		   			var input = $("#artistName").val();
 		   			if(input.length > 3){
@@ -209,7 +189,16 @@
 		   							var $div = $("<div>", {class: "kc-item"});
 		   							var img  = $('<img>');
 		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);
-		   							$div.attr('title',jsonObjectSimilarArtists.similarartists["artist"][i].name);
+		   							
+		   							var artistName = jsonObjectSimilarArtists.similarartists["artist"][i].name;
+		   							$div.attr('title',artistName);
+		   							$div.attr('artistName',artistName);
+		   							$div.click(function(e){
+				    	    			playSelectedArtist(e);
+				    	    		});
+		   							
+		   							
+		   							
 		   							$div.append(img);
 		   							
 		   							showDiv.append($div);
@@ -240,6 +229,37 @@
 		   		 });
 		    
 		    
+   			function playSelectedArtist (event) {   				
+   				var artistName = $(event.currentTarget).attr('artistName');
+   				playYouTubeArtistPlayList(artistName);
+	   			
+   			}
+   			
+   			function playYouTubeArtistPlayList(input){
+   			 $.get("/NextGen/searchYoutube/playlist/".concat(input),function(data,status){
+				  if(status=="success"){
+		    	      var jsonObjectPlayList = jQuery.parseJSON(data);
+		    	      var youtTubePlaylistId = jsonObjectPlayList.items[0].id.playlistId;
+		    	      
+		    	      // get the video ids in the playlist 
+		    	   
+		    	      $.get("/NextGen/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
+		    	    	  if(status=="success"){
+		    	    		  var jsonObjectPlayListItems = jQuery.parseJSON(data);	  
+		    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
+		    	    		    var videoId = new Array();
+		    	    		    for(var i=0;i<playListItemsArray.length;i++){
+		    	    		    	videoId[i] = playListItemsArray[i].snippet.resourceId.videoId
+		    	    		    }
+		    	  
+		    	    		    player.loadPlaylist(videoId)
+		    	    		    player.playVideo();
+		    	    	  }
+		    	      });
+			     	 }	
+		   		 });
+   			}
+   			
    			
 		    
 		    
