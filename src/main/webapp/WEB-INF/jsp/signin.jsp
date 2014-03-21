@@ -17,7 +17,7 @@
 
 
 
-<form action="<c:url value="/signin/facebook" />" method="POST">
+<form action="<c:url value="/signin/facebook/" />" method="POST">
     <input type="hidden" name="scope" value="email,publish_stream,offline_access" />	
     <button type="submit">Sign in with Facebook</button>    
 </form>

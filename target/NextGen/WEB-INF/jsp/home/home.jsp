@@ -9,9 +9,8 @@
 
 <head> 
   <jsp:include page="../fragments/headTag.jsp"/>
-	<c:set var="nextCss" value="/resources/css.css" />
+	<c:set var="nextCss" value="/resources/css/nextgen.css" />
     <link type="text/css" href="<%= request.getContextPath()%>${nextCss}" rel="stylesheet"/>  
-	
 	
 	<script type="text/javascript">
 	
@@ -156,7 +155,7 @@
 			var artistNameInput = $(this);
 			var input = $(this).val();
             if(input.length > 3 ){
-				 $.get("/search/artist/".concat(input),function(data,status){
+				 $.get("/NextGen/search/artist/".concat(input),function(data,status){
 					      if(status=="success"){
 				    	      var jsonObject = jQuery.parseJSON(data);							    	  
 				    	      var arrayResultLength = (jsonObject["results"]["artistmatches"]["artist"]).length; 
@@ -172,37 +171,16 @@
 		
 		    $("#playArtist").click(function() {
 		    	var input = $("#artistName").val();
-		    	var youtTubePlaylistId = "";
 		    	if(input.length > 0){
-		    		<!-- -->
-					 $.get("/searchYoutube/playlist/".concat(input),function(data,status){
-						  if(status=="success"){
-				    	      var jsonObjectPlayList = jQuery.parseJSON(data);
-				    	      youtTubePlaylistId = jsonObjectPlayList.items[0].id.playlistId;
-				    	      
-				    	      // get the video ids in the playlist 
-				    	   
-				    	      $.get("/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
-				    	    	  if(status=="success"){
-				    	    		  var jsonObjectPlayListItems = jQuery.parseJSON(data);	  
-				    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
-				    	    		    var videoId = new Array();
-				    	    		    for(var i=0;i<playListItemsArray.length;i++){
-				    	    		    	videoId[i] = playListItemsArray[i].snippet.resourceId.videoId
-				    	    		    }
-				    	  
-				    	    		    player.loadPlaylist(videoId)
-				    	    		    player.playVideo();
-				    	    	  }
-				    	      });
-					     	 }	
-				   		 });
+		    		// play selected input artist name in youtube 
+		    			playYouTubeArtistPlayList(input);
 		    		}
+		    	
 		   		 }).click(function(){
 		   			var input = $("#artistName").val();
 		   			if(input.length > 3){
 		   			
-		   				$.get("/search/similarArtist/".concat(input),function(data,status){
+		   				$.get("/NextGen/search/similarArtist/".concat(input),function(data,status){
 		   					if(status=="success"){
 		   						var jsonObjectSimilarArtists = jQuery.parseJSON(data);
 		   						var showDiv = $('#showSimilarArtists');
@@ -210,7 +188,16 @@
 		   							var $div = $("<div>", {class: "kc-item"});
 		   							var img  = $('<img>');
 		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);
-		   							$div.attr('title',jsonObjectSimilarArtists.similarartists["artist"][i].name);
+		   							
+		   							var artistName = jsonObjectSimilarArtists.similarartists["artist"][i].name;
+		   							$div.attr('title',artistName);
+		   							$div.attr('artistName',artistName);
+		   							$div.click(function(e){
+				    	    			playSelectedArtist(e);
+				    	    		});
+		   							
+		   							
+		   							
 		   							$div.append(img);
 		   							
 		   							showDiv.append($div);
@@ -241,11 +228,42 @@
 		   		 });
 		    
 		    
+   			function playSelectedArtist (event) {   				
+   				var artistName = $(event.currentTarget).attr('artistName');
+   				playYouTubeArtistPlayList(artistName);
+	   			
+   			}
+   			
+   			function playYouTubeArtistPlayList(input){
+   			 $.get("/NextGen/searchYoutube/playlist/".concat(input),function(data,status){
+				  if(status=="success"){
+		    	      var jsonObjectPlayList = jQuery.parseJSON(data);
+		    	      var youtTubePlaylistId = jsonObjectPlayList.items[0].id.playlistId;
+		    	      
+		    	      // get the video ids in the playlist 
+		    	   
+		    	      $.get("/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
+		    	    	  if(status=="success"){
+		    	    		  var jsonObjectPlayListItems = jQuery.parseJSON(data);	  
+		    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
+		    	    		    var videoId = new Array();
+		    	    		    for(var i=0;i<playListItemsArray.length;i++){
+		    	    		    	videoId[i] = playListItemsArray[i].snippet.resourceId.videoId
+		    	    		    }
+		    	  
+		    	    		    player.loadPlaylist(videoId)
+		    	    		    player.playVideo();
+		    	    	  }
+		    	      });
+			     	 }	
+		   		 });
+   			}
+   			
    			
 		    
 		    
 		    $(function(){		    	
-		    	  $.get("/search/allEventLocations",function(data,status){
+		    	  $.get("/NextGen/search/allEventLocations",function(data,status){
 					  if(status=="success") { 
 						  var jsonEventLocations = jQuery.parseJSON(data);
 						  var metrosLength =(jsonEventLocations.metros["metro"]).length;
@@ -277,9 +295,10 @@
 		    
 		 
 		    $("#country").change(function(){
+		    	
 		    	var locationSelected = $(this).val();
 		    
-		    	$.get("/search/allEvents/".concat(locationSelected),function(data,status){
+		    	$.get("/NextGen/search/allEvents/".concat(locationSelected),function(data,status){
 		    		if(status=="success"){
 		    			
 		    			var eventDetails = jQuery.parseJSON(data);	
@@ -287,22 +306,45 @@
 		    			deleteMarkers();
 		    			
 		    			for(var i=0; i < (eventDetails.events["event"]).length;i++ ){
-		    				
 		    				var event = (eventDetails.events["event"])[i];		    				
 		    				var geo = eventDetails.events["event"][i].venue.location["geo:point"];
 		    				var eventLatLng =  new google.maps.LatLng(geo["geo:lat"] ,geo["geo:long"]);
-		    				var marker = new google.maps.Marker({position: eventLatLng,animation: google.maps.Animation.DROP, title: event.title });
+		    				var marker = new google.maps.Marker();
+		    				marker.setPosition(eventLatLng);
+		    				marker.setAnimation(google.maps.Animation.DROP);
+		    				marker.setTitle(event.title);
 		    				marker.setMap(map);
 		    				google.maps.event.addListener(marker, 'click',setInfoWindowOnMarker(event, map, marker) );
 		    				markers.push(marker);
 		    			}
 		    			
-		    			
 		    		}
 		    	});
 		    	
+		    	$.get("/NextGen/searchCountry/search/".concat(locationSelected),function(data,status){
+		    		
+		    		if(status=="success"){
+		    			
+		    			var country = jQuery.parseJSON(data);	
+		    			
+		    				var eventLatLng =  new google.maps.LatLng(country.latitude ,country.longitude);
+		    				var marker = new google.maps.Marker();
+		    				marker.setPosition(eventLatLng);
+		    				marker.setAnimation(google.maps.Animation.DROP);
+		    				marker.setTitle(country.name);
+		    				marker.setIcon(country.imageUrl);
+		    				marker.setMap(map);
+		    				markers.push(marker);
+		    			}
+		    	
+		    	});
+		    	
+		    	
 		    	
 		    });
+		    
+		
+		    
 		    
 		   function setInfoWindowOnMarker(event, map, marker) {			   
 			   return function() { getInfoWindow(event).open(map, marker); }
@@ -385,7 +427,7 @@
 			
 		            if(input.length > 3 ){
 					
-						 $.get("/searchMovie/search/".concat(input),function(data,status){
+						 $.get("/NextGen/searchMovie/search/".concat(input),function(data,status){
 							      if(status=="success"){
 						    	      var jsonObject = jQuery.parseJSON(data);		
 							    	  
@@ -419,7 +461,7 @@
 	
 		 	  if(input.length > 3 ){
 		 		
-		 		  $.get("/searchMovie/search/".concat(input), function(data,status){
+		 		  $.get("/NextGen/searchMovie/search/".concat(input), function(data,status){
 		 			 if(status=="success"){
 		 			
 		 			     var jsonObject = jQuery.parseJSON(data);		

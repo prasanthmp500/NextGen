@@ -171,7 +171,6 @@
 		
 		    $("#playArtist").click(function() {
 		    	var input = $("#artistName").val();
-		    	var youtTubePlaylistId = "";
 		    	if(input.length > 0){
 		    		// play selected input artist name in youtube 
 		    			playYouTubeArtistPlayList(input);
@@ -243,7 +242,7 @@
 		    	      
 		    	      // get the video ids in the playlist 
 		    	   
-		    	      $.get("/NextGen/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
+		    	      $.get("/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
 		    	    	  if(status=="success"){
 		    	    		  var jsonObjectPlayListItems = jQuery.parseJSON(data);	  
 		    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
@@ -296,32 +295,65 @@
 		    
 		 
 		    $("#country").change(function(){
+		    	
 		    	var locationSelected = $(this).val();
 		    
+		    	deleteMarkers();
+		    	
 		    	$.get("/NextGen/search/allEvents/".concat(locationSelected),function(data,status){
 		    		if(status=="success"){
 		    			
 		    			var eventDetails = jQuery.parseJSON(data);	
 		    			
-		    			deleteMarkers();
+		    			
 		    			
 		    			for(var i=0; i < (eventDetails.events["event"]).length;i++ ){
-		    				
 		    				var event = (eventDetails.events["event"])[i];		    				
 		    				var geo = eventDetails.events["event"][i].venue.location["geo:point"];
 		    				var eventLatLng =  new google.maps.LatLng(geo["geo:lat"] ,geo["geo:long"]);
-		    				var marker = new google.maps.Marker({position: eventLatLng,animation: google.maps.Animation.DROP, title: event.title });
+		    				var marker = new google.maps.Marker();
+		    				marker.setPosition(eventLatLng);
+		    				marker.setAnimation(google.maps.Animation.DROP);
+		    				marker.setTitle(event.title);
 		    				marker.setMap(map);
 		    				google.maps.event.addListener(marker, 'click',setInfoWindowOnMarker(event, map, marker) );
 		    				markers.push(marker);
 		    			}
 		    			
-		    			
 		    		}
+		    		
+		    		
+		    		
+		    		
+		    		
+		    	});
+		    	
+		    	$.get("/NextGen/searchCountry/search/".concat(locationSelected),function(data,status){
+		    		
+		    		if(status=="success"){
+		    			    var marker = new google.maps.Marker();
+		    				var eventLatLng =  new google.maps.LatLng(data.latitude ,data.longitude);		    				
+		    				marker.setPosition(eventLatLng);
+		    				marker.setAnimation(google.maps.Animation.DROP);
+		    				marker.setTitle(data.name);
+		    				marker.setIcon({url:data.imageUrl, scaledSize:new google.maps.Size(25, 25) });
+		    				
+		    				
+		    				
+		    			
+		    				
+		    				marker.setMap(map);
+		    				markers.push(marker);
+		    			}
+		    	
 		    	});
 		    	
 		    	
+		    	
 		    });
+		    
+		
+		    
 		    
 		   function setInfoWindowOnMarker(event, map, marker) {			   
 			   return function() { getInfoWindow(event).open(map, marker); }
