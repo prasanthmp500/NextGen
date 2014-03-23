@@ -84,4 +84,10 @@ NextGen :: The header tag
     <link type="text/css" href="<%= request.getContextPath()%>${waterWheelCarouselCSS}" rel="stylesheet">
     
     
+    <!-- for the feedbackform dialog -->
+    
+    <c:set var="feedbackformCss" value="/resources/css/feedbackformdialog.css"> </c:set> 
+    <link type="text/css" href="<%= request.getContextPath()%>${feedbackformCss}" rel="stylesheet">
+    
+    
  

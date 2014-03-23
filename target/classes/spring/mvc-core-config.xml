@@ -46,7 +46,40 @@
 		
 	</bean>
 
+	
+	<!-- registering an event publisher and notifier -->
+	<bean id="feedBackPublisher" class="org.springframework.nextgen.service.FeedBackPublisher">
+	</bean>
+	
+	<bean id="feedBackEventNotifier" class="org.springframework.nextgen.service.FeedBackEventNotifier">
+	    <property name="mailSender" ref="mailSender"></property>
+	    <property name="mailMessage" ref="mailMessageTemplate"></property>
+	</bean>
 
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	   	<property name="host"><value>smtp.gmail.com</value></property>
+        <property name="port"><value>587</value></property>
+        <property name="protocol"><value>smtp</value></property>
+        <property name="username"><value>nextgen.entertainment.007@gmail.com</value></property>
+        <property name="password"><value>Magnolia123$</value></property>
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.smtp.quitwait">false</prop>
+            </props>
+        </property>
+	</bean>
+
+	<!-- this is a template message that we can pre-load with default state -->
+	<bean id="mailMessageTemplate" class="org.springframework.mail.SimpleMailMessage">
+	  <property name="from" value="nextgen.entertainment.007@gmail.com"/>
+	  <property name="to" value="nextgen.entertainment.007@gmail.com"/>
+	  <property name="subject" value="User FeedBack"/>
+	</bean>
+	
+	
 		
 	<mvc:view-controller path="/signin" />
 	

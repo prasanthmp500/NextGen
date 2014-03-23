@@ -15,6 +15,7 @@
   		<spring-social-twitter-version>1.0.3.RELEASE</spring-social-twitter-version>
 		<org.springframework.security.crypto-version>3.1.4.RELEASE</org.springframework.security.crypto-version>
   		<jstl-version>1.2</jstl-version>
+  		<iron-mq-version>0.0.14</iron-mq-version>
   </properties>
   
   
@@ -185,10 +186,6 @@
 		<version>${jstl-version}</version>
 	</dependency>
 	
-
-	
-
-	
 		
 	<!-- CGLIB, only required and used for @Configuration usage: could be removed in future release of Spring -->
 	<dependency>
@@ -197,6 +194,20 @@
 		<version>2.2</version>
 	</dependency>
 	
+   <!-- IronMQ message queue client -->
+        <dependency>
+            <groupId>io.iron.ironmq</groupId>
+            <artifactId>ironmq</artifactId>
+            <version>${iron-mq-version}</version>
+        </dependency>
+	
+           <!-- For mailing -->
+        <dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4</version>
+		</dependency>
+        
     
   </dependencies>
   <build>

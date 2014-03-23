@@ -242,7 +242,7 @@
 		    	      
 		    	      // get the video ids in the playlist 
 		    	   
-		    	      $.get("/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
+		    	      $.get("/NextGen/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
 		    	    	  if(status=="success"){
 		    	    		  var jsonObjectPlayListItems = jQuery.parseJSON(data);	  
 		    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
@@ -337,11 +337,6 @@
 		    				marker.setAnimation(google.maps.Animation.DROP);
 		    				marker.setTitle(data.name);
 		    				marker.setIcon({url:data.imageUrl, scaledSize:new google.maps.Size(25, 25) });
-		    				
-		    				
-		    				
-		    			
-		    				
 		    				marker.setMap(map);
 		    				markers.push(marker);
 		    			}
@@ -632,11 +627,101 @@
 		});
 	
 	</script>
+	
+	
+	<!-- for the feedback dialog box -->
+	
+	<script>
+  $(function() {
+   
+    $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 800,
+      width: 800,
+      modal: true,
+      buttons: {
+	  
+        "Submit": function() {
+		
+		var bValid = false;
+		
+		var rb1Checked = !(!$("input[name='rb1']:checked").val());
+		var rb2Checked = !(!$("input[name='rb2']:checked").val());
+		var rb3Checked = !(!$("input[name='rb3']:checked").val());
+		var rb4Checked = !(!$("input[name='rb4']:checked").val());
+		var rb5Checked = !(!$("input[name='rb5']:checked").val());
+		var rb6Checked = !(!$("input[name='rb6']:checked").val());
+		var rb7Checked = !(!$("input[name='rb7']:checked").val());
+		var rb8Checked = !(!$("input[name='rb8']:checked").val());
+		var rb9Checked = !(!$("input[name='rb9']:checked").val());
+		var rb10Checked = !(!$("input[name='rb10']:checked").val());
+		var profileName = $("#profileName").val();
+	
+		
+		bValid = (rb1Checked && rb2Checked && rb3Checked && rb4Checked && rb5Checked && rb6Checked && rb7Checked && rb8Checked && rb9Checked && rb10Checked); 
+	   
+		if ( bValid ) {
+	    	
+	    	 var dataString  = 'rb1='+ $("input[name='rb1']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb2='+ $("input[name='rb2']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb3='+ $("input[name='rb3']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb4='+ $("input[name='rb4']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb5='+ $("input[name='rb5']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb6='+ $("input[name='rb6']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb7='+ $("input[name='rb7']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb8='+ $("input[name='rb8']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb9='+ $("input[name='rb9']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'rb10='+ $("input[name='rb10']:checked").val()+'';
+				 dataString  = dataString  + '&'+ 'profileName='+profileName+'';
+				 
+		
+				 var postfeedbackUrl = $('#userFeedBackFrm').attr('action');
+				 $.ajax({
+					  type: "POST",
+					  url: postfeedbackUrl,
+					  data: dataString,
+					  success: function responseRcvd(){
+						  $("#feedbackSubmittedMsg").html("!!!!!!!! Dear User thank your for submitting your valuable feedback !!!!!");
+						  
+						  setTimeout(function(){
+							  $( "#dialog-form" ).effect( "explode","slow");
+							  $( "#dialog-form" ).dialog( "close" );
+							  },1000);
+						  
+					  }
+
+					});
+				 
+				
+				 
+				 
+	  		  }
+	    
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+  
+  
+    });
+ 
+    $( "#feedbackfrm")
+      .click(function() {
+        $( "#dialog-form" ).dialog( "open" );
+      });
+	  
+	  
+  });
+  </script>
+	
+	
+	
 </head>	
 	
 	<body>
 	
-	    <script>
+	 <script>
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
       tag.src = "https://www.youtube.com/iframe_api";
@@ -681,12 +766,6 @@
     </script>
 	
 	
-	
-
-	
-	
-	
-	
 	 <div id="wrapper">
 	 
 		<div id="header">
@@ -703,7 +782,12 @@
 			    </div>
 			   
 			   <div id="profileInfoDiv">
-			  		<a href="<c:url value="/signout"/>"> Sign out</a>
+			   		<nav>
+			            
+			            <a id="feedbackfrm" href="#">Usability Feed Back </a> | 
+			  			<a href="<c:url value="/signout"/>"> Sign out</a>
+			  		
+			  		</nav>
 				</div>
 				
 		</div>
@@ -756,31 +840,263 @@
 			  		
 			  </div>
 			  
-			  
-			  
-			  
 			</div>  
 
 			<!--  -->	
-			
-			
-	 	
-			
-			
-			
-			
 			
 			
 			
 		</div>
 		 
 	 	<div id="footer">
-	 
-				
-			
 		</div>
 	 
 	 </div>
+	
+	
+	
+	
+<div id="dialog-form" title="Feedback Form">
+ <p class="validateTips">All form fields are required.</p>
+ 
+ <p id="feedbackSubmittedMsg"></p>
+ <form  id="userFeedBackFrm" action="<c:url value='/feedback'/>" method="post">
+ 	
+  <fieldset>
+  	<input type="hidden" id="profileName" name="profileName" value="<c:out value="${mymap['profilename']}"/>" /> 
+    <table>
+
+		<tr> 
+			<td> 1.I think that I would like to use this system frequently. </td>			
+		</tr>		
+		<tr>
+			<td>
+					<table> 
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						<tr>
+							<td> <input type="radio" name="rb1" value="1"> </td>
+							<td> <input type="radio" name="rb1" value="2"> </td>
+							<td> <input type="radio" name="rb1" value="3"> </td>
+							<td> <input type="radio" name="rb1" value="4"> </td>
+							<td> <input type="radio" name="rb1" value="5"> </td>
+						</tr>
+					</table>
+			</td>
+		</tr>
+	
+		
+		<tr> 
+			<td> 2.I found the system unnecessarily complex. </td>
+		</tr>
+		<tr> <td>
+					<table> 
+						
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						<tr>
+							<td> <input type="radio" name="rb2" value="1"> </td>
+							<td> <input type="radio" name="rb2" value="2"> </td>
+							<td> <input type="radio" name="rb2" value="3"> </td>
+							<td> <input type="radio" name="rb2" value="4"> </td>
+							<td> <input type="radio" name="rb2" value="5"> </td>
+						</tr>
+						
+					</table>
+				</td>
+		
+		</tr>
+		
+		<tr> <td> 3. I thought the system was easy to use.</td> </tr>
+		<tr>
+			<td>
+					<table> 
+						
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						
+						<tr>
+							<td> <input type="radio" name="rb3" value="1"> </td>
+							<td> <input type="radio" name="rb3" value="2"> </td>
+							<td> <input type="radio" name="rb3" value="3"> </td>
+							<td> <input type="radio" name="rb3" value="4"> </td>
+							<td> <input type="radio" name="rb3" value="5"> </td>
+						</tr>
+					</table>
+				</td>
+		</tr>
+		
+		<tr> <td> 4. I think that I would need the support of a technical person to be able to use this system. </td> </tr>
+		<tr> <td>
+					<table>  
+						
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						
+						<tr>
+							<td> <input type="radio" name="rb4" value="1"> </td>
+							<td> <input type="radio" name="rb4" value="2"> </td>
+							<td> <input type="radio" name="rb4" value="3"> </td>
+							<td> <input type="radio" name="rb4" value="4"> </td>
+							<td> <input type="radio" name="rb4" value="5"> </td>
+						</tr>
+						
+					</table>
+			</td>
+		</tr>
+		
+		<tr> <td> 5.I found the various functions in this system were well integrated. </td> </tr>
+		<tr> <td>
+				<table> 
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						<tr>
+							<td> <input type="radio" name="rb5" value="1"> </td>
+							<td> <input type="radio" name="rb5" value="2"> </td>
+							<td> <input type="radio" name="rb5" value="3"> </td>
+							<td> <input type="radio" name="rb5" value="4"> </td>
+							<td> <input type="radio" name="rb5" value="5"> </td>
+						</tr>						
+					</table>
+			</td>
+		
+		</tr>
+		
+		
+		<tr> <td> 6.I thought there was too much inconsistency in this system. </td> </tr>
+		<tr>
+			<td>
+				<table>
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						<tr>
+							<td> <input type="radio" name="rb6" value="1"> </td>
+							<td> <input type="radio" name="rb6" value="2"> </td>
+							<td> <input type="radio" name="rb6" value="3"> </td>
+							<td> <input type="radio" name="rb6" value="4"> </td>
+							<td> <input type="radio" name="rb6" value="5"> </td>
+						</tr>
+					</table>
+			</td>
+		</tr>
+		
+		<tr> <td> 7.I would imagine that most people would learn to use this system very quickly. </td> </tr>
+		<tr>
+			<td>
+					<table>  
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						
+						<tr>
+							<td> <input type="radio" name="rb7" value="1"> </td>
+							<td> <input type="radio" name="rb7" value="2"> </td>
+							<td> <input type="radio" name="rb7" value="3"> </td>
+							<td> <input type="radio" name="rb7" value="4"> </td>
+							<td> <input type="radio" name="rb7" value="5"> </td>
+						</tr>
+						
+					</table>
+			</td>
+		</tr>
+		
+		<tr> <td> 8. I found the system very cumbersome to use. </td> </tr>
+		<tr> 
+			<td>
+		
+				<table> 
+						
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						
+						<tr>
+							<td> <input type="radio" name="rb8" value="1"> </td>
+							<td> <input type="radio" name="rb8" value="2"> </td>
+							<td> <input type="radio" name="rb8" value="3"> </td>
+							<td> <input type="radio" name="rb8" value="4"> </td>
+							<td> <input type="radio" name="rb8" value="5"> </td>
+						</tr>
+						
+					</table>
+		</td>
+		
+		</tr>
+		
+		<tr> <td> 9. I felt very confident using the system. </td> </tr>
+		<tr>
+			<td>
+		
+				<table> 
+						
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						
+						<tr>
+							<td> <input type="radio" name="rb9" value="1"> </td>
+							<td> <input type="radio" name="rb9" value="2"> </td>
+							<td> <input type="radio" name="rb9" value="3"> </td>
+							<td> <input type="radio" name="rb9" value="4"> </td>
+							<td> <input type="radio" name="rb9" value="5"> </td>
+						</tr>
+						
+					</table>
+			</td>
+		</tr>
+		
+		<tr> <td> 10 .I needed to learn a lot of things before I could get going with this system. </td> </tr>
+		<tr> 
+			<td>
+					<table> 
+						<tr> 
+						  <td width="20%"> Strongly Disagree </td>
+						  <td width="60%" colspan="3"> &nbsp; </td>
+						  <td width="20%"> Strongly Agree </td>
+						<tr>
+						<tr>
+							<td> <input type="radio" name="rb10" value="1"> </td>
+							<td> <input type="radio" name="rb10" value="2"> </td>
+							<td> <input type="radio" name="rb10" value="3"> </td>
+							<td> <input type="radio" name="rb10" value="4"> </td>
+							<td> <input type="radio" name="rb10" value="5"> </td>
+						</tr>
+					</table>
+			</td>
+		</tr>
+		
+    </table>	
+  
+  
+  
+  </fieldset>
+  </form>
+</div>
+	
 	
 	
 	
