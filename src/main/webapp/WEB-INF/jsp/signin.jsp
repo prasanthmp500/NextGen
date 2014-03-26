@@ -7,10 +7,9 @@
 <html>
 
 <head> 
-	
-  <jsp:include page="../jsp/fragments/headTag.jsp"/>
-    <c:set var="nextCss" value="/resources/css/nextgen.css" />
-    <link type="text/css" href="<%= request.getContextPath()%>${nextCss}" rel="stylesheet"/>  
+	   <title>NextGen</title>
+        <jsp:include page="../jsp/fragments/headTag.jsp"/>
+
   </head>
   
 <body>

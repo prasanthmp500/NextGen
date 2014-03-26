@@ -3,7 +3,6 @@ package org.springframework.nextgen.social;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
@@ -15,7 +14,6 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.connect.support.ConnectionFactoryRegistry;
 import org.springframework.social.connect.web.ConnectController;
-import org.springframework.social.connect.web.ProviderSignInController;
 import org.springframework.social.facebook.api.Facebook;
 import org.springframework.social.facebook.connect.FacebookConnectionFactory;
 
@@ -31,9 +29,9 @@ public class SocialConfig {
 	
 	
 	// for local 
-	 private static String FACEBOOK_CLIENTID= "606662689417866";
+	private static String FACEBOOK_CLIENTID= "606662689417866";
 	
-     private static String  FACEBOOK_CLIENTSECRET = "a60ccb1580975f2ce877d2e5fbf84818";
+   private static String  FACEBOOK_CLIENTSECRET = "a60ccb1580975f2ce877d2e5fbf84818";
 		
 	
      // for google app engine
@@ -43,7 +41,11 @@ public class SocialConfig {
    // private static String  FACEBOOK_CLIENTSECRET = "51c1e65b3f1cff6c6ef9895201e0a5d0";
 		
      
-   
+	// cloudbees
+	// private static String FACEBOOK_CLIENTID= "493025320809107";
+		
+    // private static String  FACEBOOK_CLIENTSECRET = "29d4a78ba7687a32aa931cd89f731153";
+		
     
 	
 	@Inject

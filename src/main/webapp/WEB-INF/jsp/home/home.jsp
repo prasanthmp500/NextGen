@@ -5,15 +5,15 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
 <html lang="en">
 
 <head> 
   <jsp:include page="../fragments/headTag.jsp"/>
-	<c:set var="nextCss" value="/resources/css/nextgen.css" />
-    <link type="text/css" href="<%= request.getContextPath()%>${nextCss}" rel="stylesheet"/>  
 	
+
 	<script type="text/javascript">
-	
+	/*	
 	var Page;
 			$(function() {
 				
@@ -64,11 +64,19 @@
 				Page.init();
 
 			});
-	
+			*/
 			</script>
 			
 			
-			   <script type="text/javascript">
+		<script>
+			  $(function() {
+			    $( "#accordion" ).accordion();
+			  });
+  		</script>
+			
+			
+			
+<script type="text/javascript">
 			   
       $(document).ready(
     		  
@@ -196,10 +204,7 @@
 				    	    			playSelectedArtist(e);
 				    	    		});
 		   							
-		   							
-		   							
 		   							$div.append(img);
-		   							
 		   							showDiv.append($div);
 		   						}
 		   						
@@ -235,6 +240,7 @@
    			}
    			
    			function playYouTubeArtistPlayList(input){
+   				
    			 $.get("/NextGen/searchYoutube/playlist/".concat(input),function(data,status){
 				  if(status=="success"){
 		    	      var jsonObjectPlayList = jQuery.parseJSON(data);
@@ -251,12 +257,34 @@
 		    	    		    	videoId[i] = playListItemsArray[i].snippet.resourceId.videoId
 		    	    		    }
 		    	  
-		    	    		    player.loadPlaylist(videoId)
+		    	    		    player.loadPlaylist(videoId);
 		    	    		    player.playVideo();
+		    	    		    
+		    	    		    $("#playList").empty();
+		    	    		    for(var i=0;i<playListItemsArray.length;i++){
+		    	    		    	var imgUrl = playListItemsArray[i].snippet.thumbnails.default.url;
+		    	    		    	var img = $('<img>');
+		    	    		    	img.attr('src',imgUrl);
+		    	    		    	img.height(50);
+		    	    		    	img.width(50);
+		    	    		    	
+		    	    		    	var listItem = $('<li></li>');
+		    	    		    	
+		    	    		    	listItem.append(img);
+		    	    		    	
+		    	    		    	listItem.append(' '+ playListItemsArray[i].snippet.title+' ' );
+		    	    		    	/* '<li>'+img.html() + +' '+ playListItemsArray[i].snippet.title  +'</li>' */
+		    	    		    	$("#playList").append(listItem);
+		    	    		    	
+		    	    		    }
+		    	    		    
 		    	    	  }
 		    	      });
 			     	 }	
 		   		 });
+   			 
+   			 
+   			 
    			}
    			
    			
@@ -690,16 +718,15 @@
 						  
 					  }
 
-					});
-				 
-				
-				 
+					}); 
 				 
 	  		  }
 	    
         },
         Cancel: function() {
-          $( this ).dialog( "close" );
+        	 $( "#dialog-form" ).effect( "explode","slow");
+			 $( "#dialog-form" ).dialog( "close" );
+          
         }
       }
   
@@ -734,7 +761,7 @@
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '225',
-          width: '400',
+          width: '250',
           videoId: 'M7lc1UVf-VE',
           events: {
             'onReady': onPlayerReady,
@@ -767,90 +794,85 @@
 	
 	
 	 <div id="wrapper">
-	 
-		<div id="header">
 				
 				<!-- 
 				<img src="resources/images/banner-graphic.png" />
 				 -->
 				
-				
-				
 				<div id="profilePhotoDiv">
 					<img src="${mymap['image']}" alt="noimage" height="100" width="100">
-			    	<p> Welcome : <c:out value="${mymap['profilename']}"/> </p>	
+			    	<p> Welcome : <c:out value="${mymap['profilename']}" />  </p>	
 			    </div>
 			   
 			   <div id="profileInfoDiv">
 			   		<nav>
-			            
 			            <a id="feedbackfrm" href="#">Usability Feed Back </a> | 
 			  			<a href="<c:url value="/signout"/>"> Sign out</a>
-			  		
 			  		</nav>
 				</div>
 				
-		</div>
-		
-		<div id="leftpanel">
-			<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    		<div id="player"></div>
-    		
-		</div>
-		
-		
-		<div id="rightpanel">
-			
-			
-			<!--  -->
-			<div id="tabs">
-			  <ul>
-			    <li><a href="#tabs-1" id="searchMusicLink">Search Music</a></li>
-			    <li><a href="#tabs-2" id="searchEventsLink">Search Events</a></li>
-			    <li><a href="#tabs-3" id="notYet">Search Movies</a></li>
-			  </ul>
-			  
-			  <div id="tabs-1">
-			    <p>
-			   	  Artist Name: <input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
-			    </p>
-			
-			    <div id="showSimilarArtists" class="kc-wrap"></div>
-			  </div>
 
-			  <div id="tabs-2">
-			    <p>
-			    	Country : <select id="country"> </select>
-			    </p>
-			    <div id="map-canvas"></div>
-			
-			  </div>
-			  
-			  
-			  <div id="tabs-3">
-			    <p>
-			   	Movie Name:	<input type="search" id="movieName"> <button id="showMovieDetails"> Search Movies </button>
-			    </p>
-			    
-				<div id="infoDiv">
+		
+				<div id="leftpanel">
+					<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+		    		<div id="player"></div>
+		    		
+	    			<div id="playlistDivScrollable">
+	    			
+	    				<ol id="playList">
+	    				</ol>
+				
+					</div>
+							
+		    		
+		    		
+		    		
 				</div>
-			    
-			    <div id="carousel">
-			  	</div>
-			  		
-			  </div>
-			  
-			</div>  
+		
+		
+			<div id="rightpanel">
+				
+				
+				<!--  -->
+				<div id="tabs">
+				  
+				  <ul>
+				    <li><a href="#tabs-1" id="searchMusicLink">Search Music</a></li>
+				    <li><a href="#tabs-2" id="searchEventsLink">Search Events</a></li>
+				    <li><a href="#tabs-3" id="searchMovies">Search Movies</a></li>
+				  </ul>
+				  
+				  <div id="tabs-1">
+				    <p>
+				   	  Artist Name: <input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
+				    </p>
+				
+				    <div id="showSimilarArtists" class="kc-wrap"></div>
+				  </div>
+	
+				  <div id="tabs-2">
+				    <p>
+				    	Country : <select id="country"> </select>
+				    </p>
+				    <div id="map-canvas"></div>
+				
+				  </div>
+				  
+				  
+				  <div id="tabs-3">
+				   	 <p>
+				   		Movie Name:	<input type="search" id="movieName"> <button id="showMovieDetails"> Search Movies </button>
+				    </p>
+					<div id="infoDiv"></div>				    
+				    <div id="carousel"></div>
+				  </div>
+				  
+				</div>  
+				<!--  -->
+				
+			</div>
+		</div>
 
-			<!--  -->	
-			
-			
-			
-		</div>
-		 
-	 	<div id="footer">
-		</div>
-	 
 	 </div>
 	
 	

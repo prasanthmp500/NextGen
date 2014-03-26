@@ -4,7 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <!--
@@ -56,7 +55,7 @@ NextGen :: The header tag
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvv1yvsXQiqYrkh_XQBo8TVKuRlaYqjSk&sensor=false"></script>
 	
-	<!-- for the slice box	 -->	
+	<!-- for the slice box	
 	
 	
 	<c:set var="sliceBoxCss1" value="/resources/css/slicebox.css"> </c:set> 
@@ -75,7 +74,7 @@ NextGen :: The header tag
     <c:set var="sliceBoxJS2" value="/resources/javascript/jquery.slicebox.js"> </c:set>
     <script src="<%= request.getContextPath()%>${sliceBoxJS2}"></script> 
     
-    <!-- end of slice box -->
+     -->
     
     <c:set var="waterWheelCarouselJS" value="/resources/javascript/jquery.waterwheelCarousel.min.js"> </c:set>
     <script src="<%= request.getContextPath()%>${waterWheelCarouselJS}"></script> 
