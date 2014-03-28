@@ -163,7 +163,8 @@
 			var artistNameInput = $(this);
 			var input = $(this).val();
             if(input.length > 3 ){
-				 $.get("/NextGen/search/artist/".concat(input),function(data,status){
+            	
+				 $.get("<c:url value='/search/artist/'/>".concat(input),function(data,status){
 					      if(status=="success"){
 				    	      var jsonObject = jQuery.parseJSON(data);							    	  
 				    	      var arrayResultLength = (jsonObject["results"]["artistmatches"]["artist"]).length; 
@@ -187,8 +188,8 @@
 		   		 }).click(function(){
 		   			var input = $("#artistName").val();
 		   			if(input.length > 3){
-		   			
-		   				$.get("/NextGen/search/similarArtist/".concat(input),function(data,status){
+		   				
+		   				$.get("<c:url value='/search/similarArtist/'/>".concat(input),function(data,status){
 		   					if(status=="success"){
 		   						var jsonObjectSimilarArtists = jQuery.parseJSON(data);
 		   						var showDiv = $('#showSimilarArtists');
@@ -241,14 +242,14 @@
    			
    			function playYouTubeArtistPlayList(input){
    				
-   			 $.get("/NextGen/searchYoutube/playlist/".concat(input),function(data,status){
+   			 $.get("<c:url value='/searchYoutube/playlist/'/>".concat(input),function(data,status){
 				  if(status=="success"){
 		    	      var jsonObjectPlayList = jQuery.parseJSON(data);
 		    	      var youtTubePlaylistId = jsonObjectPlayList.items[0].id.playlistId;
 		    	      
 		    	      // get the video ids in the playlist 
 		    	   
-		    	      $.get("/NextGen/searchYoutube/loadPlaylistItem/".concat(youtTubePlaylistId), function(data,status){ 
+		    	      $.get("<c:url value='/searchYoutube/loadPlaylistItem/'/>".concat(youtTubePlaylistId), function(data,status){ 
 		    	    	  if(status=="success"){
 		    	    		  var jsonObjectPlayListItems = jQuery.parseJSON(data);	  
 		    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
@@ -291,7 +292,7 @@
 		    
 		    
 		    $(function(){		    	
-		    	  $.get("/NextGen/search/allEventLocations",function(data,status){
+		    	  $.get("<c:url value='/search/allEventLocations'/>",function(data,status){
 					  if(status=="success") { 
 						  var jsonEventLocations = jQuery.parseJSON(data);
 						  var metrosLength =(jsonEventLocations.metros["metro"]).length;
@@ -328,7 +329,7 @@
 		    
 		    	deleteMarkers();
 		    	
-		    	$.get("/NextGen/search/allEvents/".concat(locationSelected),function(data,status){
+		    	$.get("<c:url value='/search/allEvents/'/>".concat(locationSelected),function(data,status){
 		    		if(status=="success"){
 		    			
 		    			var eventDetails = jQuery.parseJSON(data);	
@@ -356,7 +357,7 @@
 		    		
 		    	});
 		    	
-		    	$.get("/NextGen/searchCountry/search/".concat(locationSelected),function(data,status){
+		    	$.get("<c:url value='/searchCountry/search/'/>".concat(locationSelected),function(data,status){
 		    		
 		    		if(status=="success"){
 		    			    var marker = new google.maps.Marker();
@@ -458,8 +459,8 @@
 					var input = $(this).val();
 			
 		            if(input.length > 3 ){
-					
-						 $.get("/NextGen/searchMovie/search/".concat(input),function(data,status){
+		            	
+						 $.get("<c:url value='/searchMovie/search/'/>".concat(input),function(data,status){
 							      if(status=="success"){
 						    	      var jsonObject = jQuery.parseJSON(data);		
 							    	  
@@ -492,8 +493,8 @@
 		 	  var input = $("#movieName").val();
 	
 		 	  if(input.length > 3 ){
-		 		
-		 		  $.get("/NextGen/searchMovie/search/".concat(input), function(data,status){
+		 		 
+		 		  $.get("<c:url value='/searchMovie/search/'/>".concat(input), function(data,status){
 		 			 if(status=="success"){
 		 			
 		 			     var jsonObject = jQuery.parseJSON(data);		
