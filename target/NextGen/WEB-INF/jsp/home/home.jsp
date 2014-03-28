@@ -127,7 +127,7 @@
 	
 	<script type="text/javascript">
 	
-	
+	$( ".selector" ).accordion({ active: 2 });
 	
 	
 	$(document).ready(function(){
@@ -195,6 +195,7 @@
 		   						var showDiv = $('#showSimilarArtists');
 		   						for(var i=0;i<(jsonObjectSimilarArtists.similarartists["artist"]).length;i++){
 		   							var $div = $("<div>", {class: "kc-item"});
+		   							
 		   							var img  = $('<img>');
 		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);
 		   							
@@ -231,12 +232,36 @@
 		   			}
 		   			
 		   			 
+		   		 }).click(function(){
+		   			var input = $("#artistName").val();
+		   			showLastFmArtistInfo(input);
 		   		 });
+		    
+		    
+		    function showLastFmArtistInfo(artistName){
+	   			if(artistName.length > 3){
+	   				$.get("<c:url value='/search/artistInfo/'/>".concat(artistName), function(data,status){
+	   						if(status=="success"){
+	   							var artistLastFmInfoDiv	= $('#artistLastFmInfo'); 
+	   							artistLastFmInfoDiv.empty();
+	   							var img  = $('<img>');
+	   							var jsonObjectArtistInfo = jQuery.parseJSON(data);
+	   							img.attr('src', jsonObjectArtistInfo.artist.image["3"]["#text"]);
+	   							img.attr('title',jsonObjectArtistInfo.artist.name);
+	   							img.height(180).width(180);
+	   							artistLastFmInfoDiv.append(img);
+	   						}
+	   					}	
+	   					
+	   				);
+	   			}
+		    }
 		    
 		    
    			function playSelectedArtist (event) {   				
    				var artistName = $(event.currentTarget).attr('artistName');
    				playYouTubeArtistPlayList(artistName);
+   				showLastFmArtistInfo(artistName);
 	   			
    			}
    			
@@ -255,7 +280,7 @@
 		    	    		    var playListItemsArray = jsonObjectPlayListItems["items"];
 		    	    		    var videoId = new Array();
 		    	    		    for(var i=0;i<playListItemsArray.length;i++){
-		    	    		    	videoId[i] = playListItemsArray[i].snippet.resourceId.videoId
+		    	    		    	videoId[i] = playListItemsArray[i].snippet.resourceId.videoId;
 		    	    		    }
 		    	  
 		    	    		    player.loadPlaylist(videoId);
@@ -813,18 +838,28 @@
 				</div>
 				
 
-		
+				
+				
+				
 				<div id="leftpanel">
+				
+				
 					<!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
 		    		<div id="player"></div>
 		    		
-	    			<div id="playlistDivScrollable">
-	    			
-	    				<ol id="playList">
-	    				</ol>
-				
-					</div>
-							
+		    		
+		    		
+		    		<div id="accordion" style="width: 200px;">
+		    			
+		    			<h3> Youtube Play List </h3>
+		    			<div id="playlistDivScrollable" style="width: 200px;">
+	    					<ol id="playList"></ol>
+						</div>
+						
+						<h3> Artist Info... </h3>
+						<div id="artistLastFmInfo" style="width: 200px;"></div>
+						
+					</div>		
 		    		
 		    		
 		    		

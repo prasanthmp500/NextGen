@@ -29,9 +29,9 @@ public class SocialConfig {
 	
 	
 	// for local 
-//	private static String FACEBOOK_CLIENTID= "606662689417866";
+	private static String FACEBOOK_CLIENTID= "606662689417866";
 	
-  // private static String  FACEBOOK_CLIENTSECRET = "a60ccb1580975f2ce877d2e5fbf84818";
+   private static String  FACEBOOK_CLIENTSECRET = "a60ccb1580975f2ce877d2e5fbf84818";
 		
 	
      // for google app engine
@@ -42,9 +42,9 @@ public class SocialConfig {
 		
      
 	// cloudbees
-	 private static String FACEBOOK_CLIENTID= "493025320809107";
+//	 private static String FACEBOOK_CLIENTID= "493025320809107";
 		
-    private static String  FACEBOOK_CLIENTSECRET = "29d4a78ba7687a32aa931cd89f731153";
+ //   private static String  FACEBOOK_CLIENTSECRET = "29d4a78ba7687a32aa931cd89f731153";
 		
     
 	
