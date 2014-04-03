@@ -13,66 +13,42 @@
 	
 
 	<script type="text/javascript">
-	/*	
-	var Page;
-			$(function() {
-				
-				Page = (function() {
-
-					var $navArrows = $('#nav-arrows' ).hide(),
-						$shadow = $( '#shadow' ).hide(),
-						slicebox = $( '#sb-slider' ).slicebox( {
-							onReady : function() {
-
-								$navArrows.show();
-								$shadow.show();
-
-							},
-							orientation : 'r',
-							cuboidsRandom : true,
-							disperseFactor : 30
-						} ),
-						
-						init = function() {
-
-							initEvents();
-							
-						},
-						initEvents = function() {
-
-							// add navigation events
-							$navArrows.children( ':first' ).on( 'click', function() {
-
-								slicebox.next();
-								return false;
-
-							} );
-
-							$navArrows.children( ':last' ).on( 'click', function() {
-								
-								slicebox.previous();
-								return false;
-
-							} );
-
-						};
-
-						return { init : init };
-
-				})();
-
-				Page.init();
-
-			});
+		$( document ).ajaxError(function( event, request, settings ) {
+			
+			/*
+			$( "#error" ).html("");
+			$( "#error" ).append( "Error requesting page " + settings.url + "" );
+			$( "#error-dialog-modal" ).dialog( "open" );
 			*/
-			</script>
 			
+		});
+		
+		
+		$(function() {
+		    $( "#error-dialog-modal" ).dialog({
+		      autoOpen: false,
+		      show: {
+		        effect: "blind",
+		        duration: 1000
+		      },
+		      hide: {
+		        effect: "explode",
+		        duration: 1000
+		      }
+		    });
+		 
+		
+		  });
+		
+		
+	</script>
 			
-		<script>
-			  $(function() {
-			    $( "#accordion" ).accordion();
-			  });
-  		</script>
+		
+	<script>
+		  $(function() {
+		    $( "#accordion" ).accordion();
+		  });
+ 		</script>
 			
 			
 			
@@ -1155,7 +1131,9 @@
   </form>
 </div>
 	
-	
+<div id="error-dialog-modal" title="Error">
+  <p id="error"></p>
+</div>
 	
 	
 

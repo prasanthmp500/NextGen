@@ -13,66 +13,42 @@
 	
 
 	<script type="text/javascript">
-	/*	
-	var Page;
-			$(function() {
-				
-				Page = (function() {
-
-					var $navArrows = $('#nav-arrows' ).hide(),
-						$shadow = $( '#shadow' ).hide(),
-						slicebox = $( '#sb-slider' ).slicebox( {
-							onReady : function() {
-
-								$navArrows.show();
-								$shadow.show();
-
-							},
-							orientation : 'r',
-							cuboidsRandom : true,
-							disperseFactor : 30
-						} ),
-						
-						init = function() {
-
-							initEvents();
-							
-						},
-						initEvents = function() {
-
-							// add navigation events
-							$navArrows.children( ':first' ).on( 'click', function() {
-
-								slicebox.next();
-								return false;
-
-							} );
-
-							$navArrows.children( ':last' ).on( 'click', function() {
-								
-								slicebox.previous();
-								return false;
-
-							} );
-
-						};
-
-						return { init : init };
-
-				})();
-
-				Page.init();
-
-			});
+		$( document ).ajaxError(function( event, request, settings ) {
+			
+			/*
+			$( "#error" ).html("");
+			$( "#error" ).append( "Error requesting page " + settings.url + "" );
+			$( "#error-dialog-modal" ).dialog( "open" );
 			*/
-			</script>
 			
+		});
+		
+		
+		$(function() {
+		    $( "#error-dialog-modal" ).dialog({
+		      autoOpen: false,
+		      show: {
+		        effect: "blind",
+		        duration: 1000
+		      },
+		      hide: {
+		        effect: "explode",
+		        duration: 1000
+		      }
+		    });
+		 
+		
+		  });
+		
+		
+	</script>
 			
-		<script>
-			  $(function() {
-			    $( "#accordion" ).accordion();
-			  });
-  		</script>
+		
+	<script>
+		  $(function() {
+		    $( "#accordion" ).accordion();
+		  });
+ 		</script>
 			
 			
 			
@@ -434,25 +410,24 @@
 			    	}
 		    	
 		    	
-		    		var content = '<div id="content">'+
-		    						'<h1 id="firstHeading" class="firstHeading">'+ event.title +'</h1>'+
-		    						'<p> <span style="font-weight:bold;text-decoration:underline"> Artists  </span></p>'+
-		    						'<p> <span style="font-weight:bold"> Head Liner  </span>'+ event.artists.headliner + '</p>'+
-		    						'<p> <span style="font-weight:bold;text-decoration:underline"> Venue Details </span> </p>'+
-		    						'<p> <span style="font-weight:bold">Venue Name: </span>'+ event.venue.name +'  </p>'+
-		    						'<p> <span style="font-weight:bold;text-decoration:underline"> Venue Name Location </span></p>'+
-		    						'<p> <span style="font-weight:bold">City: </span>'+ event.venue.location.city +'  </p>'+
-		    						'<p> <span style="font-weight:bold">Country: </span>'+ event.venue.location.country +'  </p>'+
-		    						'<p> <span style="font-weight:bold">Street: </span>'+ event.venue.location.street +'  </p>'+
-		    						'<p> <span style="font-weight:bold">Postal Code: </span>'+ event.venue.location.postalcode +'  </p>'+
-		    						'<p> <span style="font-weight:bold">Phone Number: </span>'+ event.venue.phonenumber +'  </p>'+
-		    						'<p> <span style="font-weight:bold">Last fm url: </span>'+ event.venue.url +'  </p>'+
-		    						'<p> <span style="font-weight:bold">Website url: </span>'+ event.venue.website +'  </p>'+
-		    						'<p> <img src="'+event.image[3]['#text']+'"> </p>'+
-		    						'<p> <span style="font-weight:bold"> Event Date: </span>'+ event.startDate +' </p>'+
-		    						'<p> <span style="font-weight:bold">Tags: </span>'+ eventTag  +'</p>'+
-		    				    '</div>';
-		    				    
+			    	var content = '<div id="content">'+
+					'<h1 id="firstHeading" class="firstHeading">'+ event.title +'</h1>'+
+					'<p> <span style="font-weight:bold;text-decoration:underline"> Artists  </span></p>'+
+					'<p> <span style="font-weight:bold"> Head Liner  </span>'+ event.artists.headliner + '</p>'+
+					'<p> <span style="font-weight:bold;text-decoration:underline"> Venue Details </span> </p>'+
+					'<p> <span style="font-weight:bold">Venue Name: </span>'+ event.venue.name +'  </p>'+
+					'<p> <span style="font-weight:bold;text-decoration:underline"> Venue Name Location </span></p>'+
+					'<p> <span style="font-weight:bold">City: </span>'+ event.venue.location.city +'  </p>'+
+					'<p> <span style="font-weight:bold">Country: </span>'+ event.venue.location.country +'  </p>'+
+					'<p> <span style="font-weight:bold">Street: </span>'+ event.venue.location.street +'  </p>'+
+					'<p> <span style="font-weight:bold">Postal Code: </span>'+ event.venue.location.postalcode +'  </p>'+
+					'<p> <span style="font-weight:bold">Phone Number: </span>'+ event.venue.phonenumber +'  </p>'+
+					'<p> <span style="font-weight:bold">Last fm url: </span>'+ event.venue.url +'  </p>'+
+					'<p> <span style="font-weight:bold">Website url: </span>'+ event.venue.website +'  </p>'+
+					'<p> <img src="'+event.image[3]['#text']+'"> </p>'+
+					'<p> <span style="font-weight:bold"> Event Date: </span>'+ event.startDate +' </p>'+
+					'<p> <span style="font-weight:bold">Tags: </span>'+ eventTag  +'</p>'+
+			    '</div>';
 		    				    
 		    				    
 		    				
@@ -661,6 +636,26 @@
 		  }
 		  
 		  Movie.prototype.mpaaRating = function(){
+			  if(this.movie_mpaa_rating == 'G'){
+				  return 'General Audiences (G)';
+			  }
+			  
+			  if(this.movie_mpaa_rating == 'PG'){
+				  return 'Parental Guidance Suggested (PG)';
+			  }
+			  
+			  if(this.movie_mpaa_rating == 'PG-13'){
+				  return 'Parents Strongly Cautioned (PG-13)';
+			  }
+			  
+			  if(this.movie_mpaa_rating == 'R'){
+				  return 'Restricted (R)';
+			  }
+			  
+			  if(this.movie_mpaa_rating == 'NC-17'){
+				  return 'Adults Only (NC-17)';
+			  }
+			  
 		      return this.movie_mpaa_rating;
 		  }
 		  
@@ -1155,7 +1150,9 @@
   </form>
 </div>
 	
-	
+<div id="error-dialog-modal" title="Error">
+  <p id="error"></p>
+</div>
 	
 	
 
