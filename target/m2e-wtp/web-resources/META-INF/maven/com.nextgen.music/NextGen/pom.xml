@@ -88,29 +88,19 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>3.8.1</version>
+      <version>4.11</version>
       <scope>test</scope>
     </dependency>
     
-    
     <dependency>
-      <groupId>com.google.apis</groupId>
-      <artifactId>google-api-services-youtubeAnalytics</artifactId>
-      <version>v1-rev33-1.17.0-rc</version>
-    </dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-mock</artifactId>
+		<version>2.0.8</version>
+	</dependency>            
+      
+
     
-    <dependency>
-      <groupId>com.google.apis</groupId>
-      <artifactId>google-api-services-youtube</artifactId>
-      <version>v3-rev94-1.17.0-rc</version>
-    </dependency> 
-    
-    
-    <dependency>
-      <groupId>com.google.apis</groupId>
-      <artifactId>google-api-services-freebase</artifactId>
-      <version>v1-rev50-1.17.0-rc</version>
-    </dependency>
+
     
      <dependency>
         <groupId>javax.servlet</groupId>

@@ -4,7 +4,7 @@
 	margin-left: 0%;
 	margin-right: 0%;
 	margin-top: 0%;
-	font-family: "Trebuchet MS", "Helvetica", "Arial",  "Verdana", "sans-serif";
+	font-family: Verdana,Arial,sans-serif;
 	font-size: 62.5%;
 	background-color: #F0F0F0;/*#FAF8F8;*/
 	background-image:url("../images/backgroundImage.png");
@@ -31,6 +31,17 @@ margin-left: 2px;
 margin-right: 2px;
 margin-bottom: 2px;
 }
+
+#profilePhotoDiv img {
+	border-radius:5px;
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-right:2px;
+	padding-left:2px;
+	
+}
+
+
 
 #profileInfoDiv {
 position: absolute;
@@ -137,8 +148,16 @@ border-right: 2px solid white;
 	
 }
 
-
-
+#loadingmessage {
+    position:absolute;
+    width:100px;
+    height:100px;
+    left:50%;
+    top:20%;
+    margin-left:-50px;
+    margin-top:-50px;
+    z-index: 10;
+}
 
 
 
@@ -160,6 +179,7 @@ border-right: 2px solid white;
 }
 
 #map-canvas {
-		height: 400px;
+		height: 350px;
         width: 100%;
       }
+      

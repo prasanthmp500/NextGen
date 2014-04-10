@@ -164,7 +164,7 @@
 		   		 }).click(function(){
 		   			var input = $("#artistName").val();
 		   			if(input.length > 3){
-		   				
+		   			 $('#loadingmessage').show();
 		   				$.get("<c:url value='/search/similarArtist/'/>".concat(input),function(data,status){
 		   					if(status=="success"){
 		   						var jsonObjectSimilarArtists = jQuery.parseJSON(data);
@@ -201,6 +201,9 @@
 				                    autoScale: 75
 				                });
 		   						//
+		   						
+		   						
+		   						 $('#loadingmessage').hide(); // hide the loading message
 		   					}		   						
 		   				});//end of get function
 		   				
@@ -325,7 +328,7 @@
 		    
 		 
 		    $("#country").change(function(){
-		    	
+		    	$('#loadingmessage').show();
 		    	var locationSelected = $(this).val();
 		    
 		    	deleteMarkers();
@@ -369,6 +372,8 @@
 		    				marker.setIcon({url:data.imageUrl, scaledSize:new google.maps.Size(25, 25) });
 		    				marker.setMap(map);
 		    				markers.push(marker);
+		    				$('#loadingmessage').hide();
+		    				
 		    			}
 		    	
 		    	});
@@ -454,6 +459,8 @@
 		 	
 		 	
 		 	 $("#movieName").keyup(function(){
+		 		 
+		 		 
 					var movies = new Array();
 					var movieNameInput = $(this);
 					var input = $(this).val();
@@ -487,7 +494,9 @@
 		 	 
 		 	$("#showMovieDetails").click(function(){
 		 		
-		 	  $("#infoDiv").empty();
+		 	 $('#loadingmessage').show();
+		 	   
+		 	 $("#infoDiv").empty();
 				  
 		 		
 		 	  var input = $("#movieName").val();
@@ -500,13 +509,6 @@
 		 			     var jsonObject = jQuery.parseJSON(data);		
 				         var arrayResultLength = (jsonObject["movies"]).length; 
 				         movieMap = new Object();
-				        // $("#sliceBoxWrapper").append("<ul id='sb-slider' class='slider'>");
-				         
-				       //   $("#sb-slider").empty();
-				        
-				       
-				   	//    var list = $("#sliceBoxWrapper").prepend('<ul id="sb-slider" class="sb-slider"></ul>');
-							
 				            
 				   			$("#carousel").empty();
 				   			for(var i=0;i<arrayResultLength;i++){
@@ -564,7 +566,7 @@
 				   	          }
 				   	        });
 			    	 
-			    	     
+				   		  $('#loadingmessage').hide();
 			    	     
 		 			 }
 		 		  });
@@ -769,6 +771,18 @@
 	
 	<body>
 	
+				<div id="loadingmessage" style='display:none'>
+  					<img id="loadingStatusImg" src="resources/images/ajax-loader.gif" />
+				</div>
+				
+				
+				
+	
+	<!-- 
+				<img src="resources/images/banner-graphic.png" />
+				 -->
+				
+	
 	 <script>
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
@@ -875,7 +889,7 @@
 				  
 				  <div id="tabs-1">
 				    <p>
-				   	  Artist Name: <input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
+				   	  Artist Name/Band: <input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
 				    </p>
 				
 				    <div id="showSimilarArtists" class="kc-wrap"></div>

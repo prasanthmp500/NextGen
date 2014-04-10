@@ -15,7 +15,7 @@ public class SearchMovieController {
 	
 	   @RequestMapping(value="/search/{moviename}", method=RequestMethod.GET)
 	   @ResponseBody
-	   public String searchPlayList(@PathVariable String moviename){
+	   public String searchMovies(@PathVariable String moviename){
 		   RestTemplate restTemplate = new RestTemplate();
 		   StringBuffer sbf = new StringBuffer("http://api.rottentomatoes.com/api/public/v1.0/movies.json?page_limit=50");
 		   sbf.append("&");
