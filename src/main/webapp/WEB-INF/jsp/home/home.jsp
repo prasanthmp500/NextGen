@@ -172,17 +172,27 @@
 		   						for(var i=0;i<(jsonObjectSimilarArtists.similarartists["artist"]).length;i++){
 		   							var $div = $("<div>", {class: "kc-item"});
 		   							
-		   							var img  = $('<img>');
-		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);
 		   							
+		   							var hyperLink =  $('<a>');
+		   							hyperLink.attr('href','#');
+		   							
+		   							
+		   							
+		   							
+		   							var img  = $('<img>');
+		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);		   							
 		   							var artistName = jsonObjectSimilarArtists.similarartists["artist"][i].name;
+		   							
+		   							
+		   							hyperLink.append(img);
+		   							
 		   							$div.attr('title',artistName);
 		   							$div.attr('artistName',artistName);
 		   							$div.click(function(e){
 				    	    			playSelectedArtist(e);
 				    	    		});
 		   							
-		   							$div.append(img);
+		   							$div.append(hyperLink);
 		   							showDiv.append($div);
 		   						}
 		   						

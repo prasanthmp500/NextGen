@@ -888,7 +888,7 @@
 				  </ul>
 				  
 				  <div id="tabs-1">
-				    <p>
+				    <p id="tabs.p1">
 				   	  Artist Name/Band: <input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
 				    </p>
 				
@@ -896,7 +896,7 @@
 				  </div>
 	
 				  <div id="tabs-2">
-				    <p>
+				    <p id="tabs.p2">
 				    	Country : <select id="country"> </select>
 				    </p>
 				    <div id="map-canvas"></div>
@@ -905,7 +905,7 @@
 				  
 				  
 				  <div id="tabs-3">
-				   	 <p>
+				   	 <p id="tabs.p3">
 				   		Movie Name:	<input type="search" id="movieName"> <button id="showMovieDetails"> Search Movies </button>
 				    </p>
 					<div id="infoDiv"></div>				    
