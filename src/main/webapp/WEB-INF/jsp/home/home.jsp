@@ -13,6 +13,8 @@
 	
 
 	<script type="text/javascript">
+
+
 		$( document ).ajaxError(function( event, request, settings ) {
 			
 			/*
@@ -156,7 +158,7 @@
 		
 		    $("#playArtist").click(function() {
 		    	var input = $("#artistName").val();
-		    	if(input.length > 0){
+		    	if(input.length > 3){
 		    		// play selected input artist name in youtube 
 		    			playYouTubeArtistPlayList(input);
 		    		}
@@ -169,51 +171,65 @@
 		   					if(status=="success"){
 		   						var jsonObjectSimilarArtists = jQuery.parseJSON(data);
 		   						var showDiv = $('#showSimilarArtists');
-		   						for(var i=0;i<(jsonObjectSimilarArtists.similarartists["artist"]).length;i++){
-		   							var $div = $("<div>", {class: "kc-item"});
+		   						
+		   					
+		   						if( jsonObjectSimilarArtists.similarartists == undefined ){
 		   							
+		   							$('#loadingmessage').hide();
+		   							$( "#artistNotFoundError" ).text(jsonObjectSimilarArtists.message);
+		   						  	$( "#dialog-modal" ).dialog({
+		   						      height: 140,
+		   						      modal: true
+		   						    });
 		   							
-		   							var hyperLink =  $('<a>');
-		   							hyperLink.attr('href','#');
+		   						} else {
 		   							
-		   							
-		   							
-		   							
-		   							var img  = $('<img>');
-		   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);		   							
-		   							var artistName = jsonObjectSimilarArtists.similarartists["artist"][i].name;
-		   							
-		   							
-		   							hyperLink.append(img);
-		   							
-		   							$div.attr('title',artistName);
-		   							$div.attr('artistName',artistName);
-		   							$div.click(function(e){
-				    	    			playSelectedArtist(e);
-				    	    		});
-		   							
-		   							$div.append(hyperLink);
-		   							showDiv.append($div);
+			   						for(var i=0;i<(jsonObjectSimilarArtists.similarartists["artist"]).length;i++){
+			   							var $div = $("<div>", {class: "kc-item"});
+			   							
+			   							
+			   							var hyperLink =  $('<a>');
+			   							hyperLink.attr('href','#');
+			   							
+			   							var img  = $('<img>');
+			   							img.attr('src', jsonObjectSimilarArtists.similarartists["artist"][i].image["4"]["#text"]);		   							
+			   							var artistName = jsonObjectSimilarArtists.similarartists["artist"][i].name;
+			   							
+			   							
+			   							hyperLink.append(img);
+			   							
+			   							$div.attr('title',artistName);
+			   							$div.attr('artistName',artistName);
+			   							$div.click(function(e){
+					    	    			playSelectedArtist(e);
+					    	    		});
+			   							
+			   							$div.append(hyperLink);
+			   							showDiv.append($div);
+			   						}
+			   						
+			   						
+					                $('.kc-wrap').KillerCarousel({
+					                    // Default natural width of carousel.
+					                    width: 800,
+					                    // Item spacing in 3d (has CSS3 3d) mode.
+					                    spacing3d: 120,
+					                    // Item spacing in 2d (no CSS3 3d) mode. 
+					                    spacing2d: 120,
+					                    showShadow: true,
+					                    showReflection: true,
+					                    // Looping mode.
+					                    infiniteLoop: true,
+					                    // Scale at 75% of parent element.
+					                    autoScale: 75
+					                });
+			   						//
+			   						
+			   						 $('#loadingmessage').hide(); // hide the loading message
 		   						}
 		   						
-				                $('.kc-wrap').KillerCarousel({
-				                    // Default natural width of carousel.
-				                    width: 800,
-				                    // Item spacing in 3d (has CSS3 3d) mode.
-				                    spacing3d: 120,
-				                    // Item spacing in 2d (no CSS3 3d) mode. 
-				                    spacing2d: 120,
-				                    showShadow: true,
-				                    showReflection: true,
-				                    // Looping mode.
-				                    infiniteLoop: true,
-				                    // Scale at 75% of parent element.
-				                    autoScale: 75
-				                });
-		   						//
 		   						
-		   						
-		   						 $('#loadingmessage').hide(); // hide the loading message
+
 		   					}		   						
 		   				});//end of get function
 		   				
@@ -897,27 +913,24 @@
 				    <li><a href="#tabs-3" id="searchMovies">Search Movies</a></li>
 				  </ul>
 				  
-				  <div id="tabs-1">
-				    <p id="tabs.p1">
-				   	  Artist Name/Band: <input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
-				    </p>
-				
-				    <div id="showSimilarArtists" class="kc-wrap"></div>
+					  <div id="tabs-1">
+					   Artist Name/Band: <input type="search" id="artistName"> <button id="playArtist"> Watch  </button>
+					  <div id="showSimilarArtists" class="kc-wrap"></div>
 				  </div>
 	
 				  <div id="tabs-2">
-				    <p id="tabs.p2">
+				    <div>
 				    	Country : <select id="country"> </select>
-				    </p>
+				    </div>
 				    <div id="map-canvas"></div>
 				
 				  </div>
 				  
 				  
 				  <div id="tabs-3">
-				   	 <p id="tabs.p3">
+				   	 <div>
 				   		Movie Name:	<input type="search" id="movieName"> <button id="showMovieDetails"> Search Movies </button>
-				    </p>
+				    </div>
 					<div id="infoDiv"></div>				    
 				    <div id="carousel"></div>
 				  </div>
@@ -1176,6 +1189,10 @@
 	
 <div id="error-dialog-modal" title="Error">
   <p id="error"></p>
+</div>
+
+<div id="dialog-modal" title="Error">
+  <p id="artistNotFoundError"></p>
 </div>
 	
 	
