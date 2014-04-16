@@ -20,6 +20,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/searchCountry/search/**" />
+            <mvc:exclude-mapping path="/resources/**" />
 	        <bean class="org.springframework.nextgen.social.UserInterceptor">
 	            <constructor-arg ref="usersConnectionRepository" />
 	        </bean>

@@ -27,7 +27,7 @@ public class SearchCountryController {
 			 
 			 String url = req.getRequestURL().toString();
 			 String baseURL = url.substring(0, url.length() - req.getRequestURI().length()) + req.getContextPath() + "/";
-			 String imageUrl = baseURL+"/resources/images/countryflagsmall/"+country.getName()+".png";
+			 String imageUrl = baseURL+"resources/images/countryflagsmall/"+country.getName()+".png";
 			 country.setImageUrl(imageUrl);
 		 } 
 		 return country;
