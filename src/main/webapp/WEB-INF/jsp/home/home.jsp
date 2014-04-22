@@ -167,6 +167,8 @@
 		   			var input = $("#artistName").val();
 		   			if(input.length > 3){
 		   			 $('#loadingmessage').show();
+		   			 $('#loadingmessage').delay(6000).fadeOut();
+		   			 
 		   				$.get("<c:url value='/search/similarArtist/'/>".concat(input),function(data,status){
 		   					if(status=="success"){
 		   						var jsonObjectSimilarArtists = jQuery.parseJSON(data);
@@ -176,7 +178,7 @@
 		   						if( jsonObjectSimilarArtists.similarartists == undefined ){
 		   							
 		   							$('#loadingmessage').hide();
-		   							$( "#artistNotFoundError" ).text(jsonObjectSimilarArtists.message);
+		   							$( "#notFoundError" ).text(jsonObjectSimilarArtists.message);
 		   						  	$( "#dialog-modal" ).dialog({
 		   						      height: 140,
 		   						      modal: true
@@ -443,21 +445,21 @@
 		    	
 			    	var content = '<div id="content">'+
 					'<h1 id="firstHeading" class="firstHeading">'+ event.title +'</h1>'+
-					'<p> <span style="font-weight:bold;text-decoration:underline"> Artists  </span></p>'+
-					'<p> <span style="font-weight:bold"> Head Liner  </span>'+ event.artists.headliner + '</p>'+
-					'<p> <span style="font-weight:bold;text-decoration:underline"> Venue Details </span> </p>'+
-					'<p> <span style="font-weight:bold">Venue Name: </span>'+ event.venue.name +'  </p>'+
-					'<p> <span style="font-weight:bold;text-decoration:underline"> Venue Name Location </span></p>'+
-					'<p> <span style="font-weight:bold">City: </span>'+ event.venue.location.city +'  </p>'+
-					'<p> <span style="font-weight:bold">Country: </span>'+ event.venue.location.country +'  </p>'+
-					'<p> <span style="font-weight:bold">Street: </span>'+ event.venue.location.street +'  </p>'+
-					'<p> <span style="font-weight:bold">Postal Code: </span>'+ event.venue.location.postalcode +'  </p>'+
-					'<p> <span style="font-weight:bold">Phone Number: </span>'+ event.venue.phonenumber +'  </p>'+
-					'<p> <span style="font-weight:bold">Last fm url: </span>'+ event.venue.url +'  </p>'+
-					'<p> <span style="font-weight:bold">Website url: </span>'+ event.venue.website +'  </p>'+
-					'<p> <img src="'+event.image[3]['#text']+'"> </p>'+
-					'<p> <span style="font-weight:bold"> Event Date: </span>'+ event.startDate +' </p>'+
-					'<p> <span style="font-weight:bold">Tags: </span>'+ eventTag  +'</p>'+
+					'<p><span style="font-weight:bold;text-decoration:underline"> Artists  </span> <br>'+
+					'<span style="font-weight:bold"> Head Liner  </span>'+ event.artists.headliner + '<br>'+
+					'<span style="font-weight:bold;text-decoration:underline"> Venue Details </span> <br>'+
+					'<span style="font-weight:bold">Venue Name: </span>'+ event.venue.name +'<br> '+
+					'<span style="font-weight:bold;text-decoration:underline"> Venue Name Location </span> <br>'+
+					'<span style="font-weight:bold">City: </span>'+ event.venue.location.city +'<br>'+
+					'<span style="font-weight:bold">Country: </span>'+ event.venue.location.country +' <br>'+
+					'<span style="font-weight:bold">Street: </span>'+ event.venue.location.street +' <br>'+
+					'<span style="font-weight:bold">Postal Code: </span>'+ event.venue.location.postalcode +' <br>'+
+					'<span style="font-weight:bold">Phone Number: </span>'+ event.venue.phonenumber +' <br>'+
+					'<span style="font-weight:bold">Last fm url: </span>'+ event.venue.url +' <br>'+
+					'<span style="font-weight:bold">Website url: </span>'+ event.venue.website +'<br>'+
+					'<img src="'+event.image[3]['#text']+'"> <br>'+
+					'<span style="font-weight:bold"> Event Date: </span>'+ event.startDate +'<br>'+
+					'<span style="font-weight:bold">Tags: </span>'+ eventTag  +'<br> </p>'+
 			    '</div>';
 		    				    
 		    				    
@@ -531,11 +533,23 @@
 		 		 
 		 		  $.get("<c:url value='/searchMovie/search/'/>".concat(input), function(data,status){
 		 			 if(status=="success"){
-		 			
+		 				 
+		 				
 		 			     var jsonObject = jQuery.parseJSON(data);		
 				         var arrayResultLength = (jsonObject["movies"]).length; 
 				         movieMap = new Object();
-				            
+								
+				         if(jsonObject.total == 0) {
+				        	 
+				        	 $( "#notFoundError" ).text("No Movies found");
+	   						  	$( "#dialog-modal" ).dialog({
+	   						      height: 140,
+	   						      modal: true
+	   						    });
+				        	 
+				         }
+				         
+				         
 				   			$("#carousel").empty();
 				   			for(var i=0;i<arrayResultLength;i++){
 			    	    	 
@@ -551,7 +565,13 @@
 			    	    		var movie_year = movieItem.year;
 			    	    		var movie_mpa_rating = movieItem.mpaa_rating;
 			    	    		var movie_runtime = movieItem.runtime;
+			    	    		
 			    	    		var movie_critics_consensus = movieItem.critics_consensus; 
+			    	    		
+			    	    		if (typeof movieItem.critics_consensus == "undefined" ) {
+			    	    			movie_critics_consensus = '';
+			    	    		}
+			    	    		
 			    	    		var movie_cast = '';
 			    	    		
 			    	    		if(typeof movieItem.abridged_cast != "undefined" ) {
@@ -1192,7 +1212,7 @@
 </div>
 
 <div id="dialog-modal" title="Error">
-  <p id="artistNotFoundError"></p>
+  <p id="notFoundError"></p>
 </div>
 	
 	

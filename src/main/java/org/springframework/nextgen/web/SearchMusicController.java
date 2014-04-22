@@ -21,7 +21,7 @@ public class SearchMusicController {
    @ResponseBody
    public String searchArtist(@PathVariable String artistname){
 	   RestTemplate restTemplate = new RestTemplate();
-	   StringBuffer sbf = new StringBuffer("http://ws.audioscrobbler.com/2.0/?method=artist.search");
+	   StringBuffer sbf = new StringBuffer("https://ws.audioscrobbler.com/2.0/?method=artist.search");
 	   sbf.append("&");
 	   sbf.append("artist=".concat(artistname));
 	   sbf.append("&");
@@ -36,7 +36,7 @@ public class SearchMusicController {
    @ResponseBody
    public String searchArtistInfo(@PathVariable String artistname){
 	   RestTemplate restTemplate = new RestTemplate();
-	   StringBuffer sbf = new StringBuffer("http://ws.audioscrobbler.com/2.0/?method=artist.getInfo");
+	   StringBuffer sbf = new StringBuffer("https://ws.audioscrobbler.com/2.0/?method=artist.getInfo");
 	   sbf.append("&");
 	   sbf.append("artist=".concat(artistname));
 	   sbf.append("&");
@@ -54,7 +54,7 @@ public class SearchMusicController {
    @ResponseBody
    public String searchSimilarArtist(@PathVariable String artistname){
 	   RestTemplate restTemplate = new RestTemplate();
-	   StringBuffer sbf = new StringBuffer("http://ws.audioscrobbler.com/2.0/?method=artist.getsimilar");
+	   StringBuffer sbf = new StringBuffer("https://ws.audioscrobbler.com/2.0/?method=artist.getsimilar");
 	   sbf.append("&");
 	   sbf.append("artist=".concat(artistname));
 	   sbf.append("&");
@@ -71,7 +71,7 @@ public class SearchMusicController {
    public String allEventLocations(){
 	   
 	   RestTemplate restTemplate = new RestTemplate();
-	   StringBuffer sbf = new StringBuffer("http://ws.audioscrobbler.com/2.0/?method=geo.getmetros");
+	   StringBuffer sbf = new StringBuffer("https://ws.audioscrobbler.com/2.0/?method=geo.getmetros");
 	   sbf.append("&");
 	   sbf.append("api_key=".concat(Utils.LAST_FM_API_KEY));
 	   sbf.append("&");
@@ -86,7 +86,7 @@ public class SearchMusicController {
    public String eventsAtLocation(@PathVariable String location){
 	   
 	   RestTemplate restTemplate = new RestTemplate();
-	   StringBuffer sbf = new StringBuffer("http://ws.audioscrobbler.com/2.0/?method=geo.getevents");
+	   StringBuffer sbf = new StringBuffer("https://ws.audioscrobbler.com/2.0/?method=geo.getevents");
 	   sbf.append("&");
 	   sbf.append("location="+location);
 	   sbf.append("&");
