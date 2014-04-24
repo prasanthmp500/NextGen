@@ -16,7 +16,7 @@ public class SearchCountryController {
 
 	 @RequestMapping(value="/search/{cityName}", method=RequestMethod.GET)
 	   @ResponseBody
-	   public Country searchPlayList(@PathVariable String cityName, HttpServletRequest req){
+	   public Country searchCountryInfo(@PathVariable String cityName, HttpServletRequest req){
 		   return getCountry(cityName,req);
 	   }
 	
