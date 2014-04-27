@@ -318,6 +318,11 @@
    			 
    			}
    			
+   			function clearAccordion(){
+					  $("#playList").empty();
+   					  $("#artistLastFmInfo").empty();
+   			}
+   			
    			
    			function showYoutubeMovieTrailer(moviename){
    				$.get("<c:url value='/searchYoutube/searchMovieTrailer/'/>".concat(moviename) ,function(data,status){
@@ -325,8 +330,7 @@
 	   					 
 	   					  player.loadPlaylist(null);
 	   					  
-	   					  $("#playList").empty();
-	   					  $("#artistLastFmInfo").empty();
+	   					  clearAccordion();
 	   					
 	   					  var jsonObjectVideoTrailerItems = jQuery.parseJSON(data);	
 	   					  var videoItems = jsonObjectVideoTrailerItems["items"];
@@ -735,7 +739,14 @@
 				  infoDivTag.empty();
 				  
 				  var titleTag = $('<p></p>');
-				  titleTag.append('<span style="font-weight:bold;text-decoration:underline">'+  movieToDisplay.title() + '</span>');
+				  titleTag.append('<span style="font-weight:bold;text-decoration:underline">'+  movieToDisplay.title() + '</span> &nbsp;');
+				  var buttonYoutube = $('<button></button>');
+				  buttonYoutube.text("watch youtube trailer");
+				  buttonYoutube.bind('click', function(){
+					  showYoutubeMovieTrailer(movieToDisplay.title())
+				  } );
+				  titleTag.append(buttonYoutube);
+				  
 				  infoDivTag.append(titleTag);
 				  
 				  var rottenTomatoesTable = $('<table></table>');
@@ -751,21 +762,22 @@
 				  
 				  
 				  var row2 = $('<tr></tr>');
-				  
 				  var row2col1 = $('<td></td>');
 				  var row2col2 = $('<td></td>');
 				  var row2col3 = $('<td></td>');
 				  row2col3.attr('colspan',2);
 				  
-				  row2col1.text('Released : '+ movieToDisplay.releaseYear()+' ');
-				  row2col2.text('MPAA Rating : '+ movieToDisplay.mpaaRating()+' ');
-				  row2col3.text('Duration : '+ movieToDisplay.runtime()+' (Minutes)');
+				  row2col1.append('<span style="font-weight:bold;text-decoration:underline">Released</span> :');
+				  row2col1.append('<span>'+ movieToDisplay.releaseYear()+'</span>'); 
+				  
+				  
+				  row2col2.append('<span style="font-weight:bold;text-decoration:underline">MPAA Rating</span> : <span>'+ movieToDisplay.mpaaRating()+'</span>');
+				  row2col3.append('<span style="font-weight:bold;text-decoration:underline">Duration </span>  :  <span>'+ movieToDisplay.runtime()+' (Minutes) </span>');
 				  row2.append(row2col1, row2col2 ,row2col3 );
 				  rottenTomatoesTable.append(row2);
+
 				  
-				  var hrtag = $('<hr>');
-				  
-				  infoDivTag.append(hrtag);
+				
 					
 				
 				  
@@ -773,13 +785,13 @@
 				 
 				  var row4col1 = $('<td></td>');
 				  row4col1.attr("colspan",4);
-				  row4col1.text('Movie Cast : '+ movieToDisplay.movieCast()+' ');
+				  row4col1.append('<span style="font-weight:bold;text-decoration:underline">Movie Cast </span> : <span>'+ movieToDisplay.movieCast()+'</span>');
 				  rottenTomatoesTable.append(row4.append(row4col1));
 				  
 				  var row3 = $('<tr></tr>');
 				  var row3col3 = $('<td></td>');
 				  row3col3.attr("colspan",4);
-				  row3col3.text("Critics Consensus : "+movieToDisplay.criticsConsensus()+" ");
+				  row3col3.append('<span style="font-weight:bold;text-decoration:underline">Critics Consensus </span> : <span>'+movieToDisplay.criticsConsensus()+'</span>');
 				  rottenTomatoesTable.append(row3.append(row3col3));
 				  
 				  
@@ -791,10 +803,10 @@
 				  var row5col3 = $('<td></td>'); 
 				  var row5col4 = $('<td></td>');
 				  
-				  row5col1.text('Critics Rating :'+ movieToDisplay.movieRating()+' ');
-				  row5col2.text('Critics Score :'+ movieToDisplay.movieScore()+' ');
-				  row5col3.text('Audience Score :'+movieToDisplay.movieAudienceScore()+' ');
-				  row5col4.text('Audience Rating :'+movieToDisplay.movieAudienceRating()+' ');
+				  row5col1.append('<span style="font-weight:bold;text-decoration:underline">Critics Rating </span> : <span>'+ movieToDisplay.movieRating()+'</span>');
+				  row5col2.append('<span style="font-weight:bold;text-decoration:underline">Critics Score </span> : <span>'+ movieToDisplay.movieScore()+'</span>');
+				  row5col3.append('<span style="font-weight:bold;text-decoration:underline">Audience Score </span> : <span>'+movieToDisplay.movieAudienceScore()+'</span>');
+				  row5col4.append('<span style="font-weight:bold;text-decoration:underline">Audience Rating </span> : <span>'+movieToDisplay.movieAudienceRating()+'</span>');
 				  rottenTomatoesTable.append(row5.append(row5col1,row5col2,row5col3,row5col4));
 				  
 				  var imdbTable = $('<table></table>');
@@ -814,9 +826,9 @@
 				  var tb2row2col2 = $('<td></td>');
 				  var tb2row2col3 = $('<td></td>');
 				  tb2row2col3.attr('colspan',3);
-				  tb2row2col1.text("Genre :"+ movieToDisplay.movieImdbInfoGenre()+' ');
-				  tb2row2col2.text("Director :"+ movieToDisplay.movieImdbInfoDirector()+' ');
-				  tb2row2col3.text("Writer :"+ movieToDisplay.movieImdbInfoWriter()+' ');
+				  tb2row2col1.append('<span style="font-weight:bold;text-decoration:underline">Genre </span> : <span>'+ movieToDisplay.movieImdbInfoGenre()+'</span>');
+				  tb2row2col2.append('<span style="font-weight:bold;text-decoration:underline">Director </span> : <span>'+ movieToDisplay.movieImdbInfoDirector()+'</span>');
+				  tb2row2col3.append('<span style="font-weight:bold;text-decoration:underline">Writer </span> : <span>'+ movieToDisplay.movieImdbInfoWriter()+'</span>');
 				  imdbTable.append(tb2row2.append(tb2row2col1,tb2row2col2,tb2row2col3));
 	
 				  var tb2row3 = $('<tr></tr>');
@@ -826,44 +838,22 @@
 				  var tb2row3col4 = $('<td></td>');
 				  var tb2row3col5 = $('<td></td>');
 				  var tb2row3col6 = $('<td></td>');
-				  tb2row3col1.text('Language :'+ movieToDisplay.movieImdbInfoLanguage()+' ');
-				  tb2row3col2.text('Country :'+ movieToDisplay.movieImdbInfoCountry()+' ');
-				  tb2row3col3.text('MetaScore :'+ movieToDisplay.movieImdbInfoMetaScore()+' ');
-				  tb2row3col4.text('Rating :'+ movieToDisplay.movieImdbInfoRating()+' ');
-				  tb2row3col5.text('Votes :'+movieToDisplay.movieImdbInfoVotes()+' ');
-				  tb2row3col6.text('Type : '+movieToDisplay.movieImdbInfoType()+' ');
+				  tb2row3col1.append('<span style="font-weight:bold;text-decoration:underline">Language </span> : <span>'+ movieToDisplay.movieImdbInfoLanguage()+'</span>');
+				  tb2row3col2.append('<span style="font-weight:bold;text-decoration:underline">Country </span> : <span>'+ movieToDisplay.movieImdbInfoCountry()+'</span>');
+				  tb2row3col3.append('<span style="font-weight:bold;text-decoration:underline">MetaScore </span> : <span>'+ movieToDisplay.movieImdbInfoMetaScore()+'</span>');
+				  tb2row3col4.append('<span style="font-weight:bold;text-decoration:underline">Rating </span> : <span>'+ movieToDisplay.movieImdbInfoRating()+'</span>');
+				  tb2row3col5.append('<span style="font-weight:bold;text-decoration:underline">Votes </span> : <span>'+movieToDisplay.movieImdbInfoVotes()+'</span>');
+				  tb2row3col6.append('<span style="font-weight:bold;text-decoration:underline">Type </span> : <span>'+movieToDisplay.movieImdbInfoType()+'</span>');
 				 
 				  imdbTable.append( tb2row3.append(tb2row3col1,tb2row3col2,tb2row3col3,tb2row3col4,tb2row3col5,tb2row3col6));
 				  
 				  var tb2row4 = $('<tr></tr>');
 				  var tb2row4col1 = $('<td></td>');
 				  tb2row4col1.attr('colspan',6);
-				  tb2row4col1.text('Plot : '+ movieToDisplay.movieImdbInfoPlot()+' ');
+				  tb2row4col1.append('<span style="font-weight:bold;text-decoration:underline">Plot </span>: <span>'+ movieToDisplay.movieImdbInfoPlot()+'</span>');
 				  imdbTable.append( tb2row4.append(tb2row4col1));
  					
-				  infoDivTag.append($('<hr>'));
-				  
-				  
-				  var youtubeShowTrailerTable = $('<table></table>');
-				  youtubeShowTrailerTable.attr('width','100%');
-				  youtubeShowTrailerTable.attr("border",1);
-				   
-				  var tb3row1 = $('<tr></tr>');
-				  var tb3row1col1 = $('<th></th>');
-				  tb3row1col1.text("Youtube"); 
-				  youtubeShowTrailerTable.append(tb3row1.append(tb3row1col1));
-				  infoDivTag.append(youtubeShowTrailerTable);
-				  
-				  var tb3row2 = $('<tr></tr>');
-				  var tb3row2col1 = $('<td></td>');
-				  
-				  var buttonYoutube = $('<button></button>');
-				  
-				  buttonYoutube.text("watch trailer");
-				  youtubeShowTrailerTable.append(tb3row2.append(tb3row2col1.append(buttonYoutube)));
-				  buttonYoutube.bind('click', function(){
-					  showYoutubeMovieTrailer(movieToDisplay.title())
-				  } );
+			
 				  
 			  }
 		 	
