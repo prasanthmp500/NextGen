@@ -24,11 +24,18 @@
   
 <body>
 
+	 <script src="<%= request.getContextPath()%>/resources/javascript/three/three.min.js"></script>
+	 <script src="<%= request.getContextPath()%>/resources/javascript/three/tween.min.js"></script>
+   	 <script src="<%= request.getContextPath()%>/resources/javascript/three/TrackballControls.js"></script>
+	 <script src="<%= request.getContextPath()%>/resources/javascript/three/CSS3DRenderer.js"></script>
+
+		
+		<!-- 
 		<script src="http://threejs.org/build/three.min.js"></script>
 		<script src="http://threejs.org/examples/js/libs/tween.min.js"></script>
-		<script src="http://threejs.org/examples/js/controls/TrackballControls.js"></script>
-		<script src="http://threejs.org/examples/js/renderers/CSS3DRenderer.js"></script>
-		
+		<script src="https://threejs.org/examples/js/controls/TrackballControls.js"></script>
+		<script src="https://threejs.org/examples/js/renderers/CSS3DRenderer.js"></script>
+		 -->
 
 		
 <div id="container">

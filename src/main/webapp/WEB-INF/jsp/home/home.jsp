@@ -316,13 +316,30 @@
 			     	 }	
 		   		 });
    			 
-   			 
-   			 
    			}
    			
    			
-		    
-		    
+   			function showYoutubeMovieTrailer(moviename){
+   				$.get("<c:url value='/searchYoutube/searchMovieTrailer/'/>".concat(moviename) ,function(data,status){
+	   				 if(status=="success"){
+	   					 
+	   					  player.loadPlaylist(null);
+	   					  
+	   					  $("#playList").empty();
+	   					  $("#artistLastFmInfo").empty();
+	   					
+	   					  var jsonObjectVideoTrailerItems = jQuery.parseJSON(data);	
+	   					  var videoItems = jsonObjectVideoTrailerItems["items"];
+	   					  if(videoItems.length>0){
+   							var youtubeVideoId = videoItems[0].id["videoId"]; 
+   							player.loadVideoById(youtubeVideoId);
+   							player.playVideo();
+	   					  }
+	   				 }
+   				});
+   			}
+   			
+   			
 		    $(function(){		    	
 		    	  $.get("<c:url value='/search/allEventLocations'/>",function(data,status){
 					  if(status=="success") { 
@@ -576,13 +593,101 @@
 			    	    		
 			    	    		if(typeof movieItem.abridged_cast != "undefined" ) {
 			    	    			for(var j=0;j<movieItem.abridged_cast.length;j++) {
-			    	    				
 			    	    				movie_cast = movie_cast + ''+ movieItem.abridged_cast[j].name +'|';
-				    	    		
 			    	    			}
 			    	    		}
 			    	    		
-			    	    		movieMap[id] = new Movie(id,movie_title,movie_year,movie_mpa_rating,movie_runtime,movie_critics_consensus,movie_cast );
+			    	    		
+			    	    		var criticsRating = '';
+			    	    		var criticsScore = '';
+			    	    		var audienceScore = '';
+			    	    		var audienceRating = '';
+			    	    		
+			    	    		
+			    	    		if(movieItem.ratings.critics_rating != "undefined"){
+			    	    			criticsRating = movieItem.ratings.critics_rating;
+			    	    		}
+			    	    		
+			    	    		if(movieItem.ratings.critics_score != "undefined"){
+			    	    			criticsScore = movieItem.ratings.critics_score;
+			    	    		}
+			    	    		
+			    	    		if(movieItem.ratings.audience_score != "undefined"){
+			    	    			audienceScore = movieItem.ratings.audience_score;
+			    	    		}
+			    	    		
+			    	    		if(movieItem.ratings.audience_rating != "undefined"){
+			    	    			audienceRating = movieItem.ratings.audience_rating;
+			    	    		}
+			    	    		
+			    	    		
+			    	    		var imdbInfoGenre = '';
+			    	    		var imdbInfoDirector = '';
+			    	    		var imdbInfoWriter = '';
+			    	    		var imdbInfoPlot = '';
+			    	    		var imdbInfoLanguage = '';
+			    	    		var imdbInfoCountry = '';
+			    	    		var imdbInfoMetaScore = '';
+			    	    		var imdbInfoRating = '';
+			    	    		var imdbInfoVotes = '';
+			    	    		var imdbInfoType = '';
+			    	    		
+				    	    	if( typeof movieItem.imdbInfo != "undefined" ){
+				    	    		
+				    	    		var imdbdatabaseInformation  = jQuery.parseJSON(movieItem.imdbInfo);
+				    	    		
+				    	    		if(typeof imdbdatabaseInformation.Genre != "undefined"){
+				    	    			imdbInfoGenre = imdbdatabaseInformation.Genre;
+				    	    		}
+				    	    		
+				    	    		
+				    	    		if(typeof imdbdatabaseInformation.Director != "undefined"){
+				    	    			imdbInfoDirector = imdbdatabaseInformation.Director;
+				    	    		}
+				    	    		
+
+				    	    		if(typeof imdbdatabaseInformation.Writer != "undefined"){
+				    	    			imdbInfoWriter = imdbdatabaseInformation.Writer;
+				    	    		}
+
+				    	    		if(typeof imdbdatabaseInformation.Plot != "undefined"){
+				    	    			imdbInfoPlot = imdbdatabaseInformation.Plot;
+				    	    		}
+				    	    		
+				    	    		if(typeof imdbdatabaseInformation.Language != "undefined"){
+				    	    			imdbInfoLanguage = imdbdatabaseInformation.Language;
+				    	    		}
+				    	    		
+				    	    		
+				    	    		if(typeof imdbdatabaseInformation.Country != "undefined"){
+				    	    			imdbInfoCountry = imdbdatabaseInformation.Country;
+				    	    		}
+				    	    		
+				    	    		if(typeof imdbdatabaseInformation.Metascore != "undefined"){
+				    	    			imdbInfoMetaScore = imdbdatabaseInformation.Metascore;
+				    	    		}
+				    	    		
+				    	    		if(typeof imdbdatabaseInformation.imdbRating != "undefined"){
+				    	    			imdbInfoRating = imdbdatabaseInformation.imdbRating;
+				    	    		}
+				    	    		
+				    	    		if(typeof imdbdatabaseInformation.imdbVotes != "undefined"){
+				    	    			imdbInfoVotes = imdbdatabaseInformation.imdbVotes;
+				    	    		}
+				    	    		
+				    	    		if(typeof imdbdatabaseInformation.Type != "undefined"){
+				    	    			imdbInfoType = imdbdatabaseInformation.Type;
+				    	    		}
+				    	    		
+				    	    	}
+			    	    		
+				    	 	
+			    	    		
+			    	    		
+			    	    		movieMap[id] = new Movie(id,movie_title,movie_year,movie_mpa_rating,movie_runtime,movie_critics_consensus,movie_cast,
+			    	    				criticsRating,criticsScore,audienceScore,audienceRating,
+			    	    				imdbInfoGenre,imdbInfoDirector,imdbInfoWriter,imdbInfoPlot,imdbInfoLanguage,imdbInfoCountry,imdbInfoMetaScore,imdbInfoRating,
+			    	    				imdbInfoVotes,imdbInfoType);
 			    	    		
 			    	    		img.click(function(e){
 			    	    			showMovieInfoInDetail(e);
@@ -620,6 +725,154 @@
 		 	});
 		 	
 		 	
+		 	
+		 	
+		 	 function showMovieInfoInDetail(event) {
+				  
+				  var movieToDisplay =  movieMap[event.currentTarget.id]; 
+				  
+				  var infoDivTag =  $("#infoDiv");
+				  infoDivTag.empty();
+				  
+				  var titleTag = $('<p></p>');
+				  titleTag.append('<span style="font-weight:bold;text-decoration:underline">'+  movieToDisplay.title() + '</span>');
+				  infoDivTag.append(titleTag);
+				  
+				  var rottenTomatoesTable = $('<table></table>');
+				  rottenTomatoesTable.attr('width','100%');
+				  rottenTomatoesTable.attr("border",1);
+				  var row1 = $('<tr></tr>');
+				 
+				  var row1col1 = $('<th></th>');
+				  row1col1.attr("colspan",4);
+				  row1col1.text("Rotten Tomatoes");
+				  rottenTomatoesTable.append(row1.append(row1col1));
+				  infoDivTag.append(rottenTomatoesTable);
+				  
+				  
+				  var row2 = $('<tr></tr>');
+				  
+				  var row2col1 = $('<td></td>');
+				  var row2col2 = $('<td></td>');
+				  var row2col3 = $('<td></td>');
+				  row2col3.attr('colspan',2);
+				  
+				  row2col1.text('Released : '+ movieToDisplay.releaseYear()+' ');
+				  row2col2.text('MPAA Rating : '+ movieToDisplay.mpaaRating()+' ');
+				  row2col3.text('Duration : '+ movieToDisplay.runtime()+' (Minutes)');
+				  row2.append(row2col1, row2col2 ,row2col3 );
+				  rottenTomatoesTable.append(row2);
+				  
+				  var hrtag = $('<hr>');
+				  
+				  infoDivTag.append(hrtag);
+					
+				
+				  
+				  var row4  = $('<tr></tr>');
+				 
+				  var row4col1 = $('<td></td>');
+				  row4col1.attr("colspan",4);
+				  row4col1.text('Movie Cast : '+ movieToDisplay.movieCast()+' ');
+				  rottenTomatoesTable.append(row4.append(row4col1));
+				  
+				  var row3 = $('<tr></tr>');
+				  var row3col3 = $('<td></td>');
+				  row3col3.attr("colspan",4);
+				  row3col3.text("Critics Consensus : "+movieToDisplay.criticsConsensus()+" ");
+				  rottenTomatoesTable.append(row3.append(row3col3));
+				  
+				  
+				  
+				  
+				  var row5  = $('<tr></tr>');
+				  var row5col1 = $('<td></td>');
+				  var row5col2 = $('<td></td>');
+				  var row5col3 = $('<td></td>'); 
+				  var row5col4 = $('<td></td>');
+				  
+				  row5col1.text('Critics Rating :'+ movieToDisplay.movieRating()+' ');
+				  row5col2.text('Critics Score :'+ movieToDisplay.movieScore()+' ');
+				  row5col3.text('Audience Score :'+movieToDisplay.movieAudienceScore()+' ');
+				  row5col4.text('Audience Rating :'+movieToDisplay.movieAudienceRating()+' ');
+				  rottenTomatoesTable.append(row5.append(row5col1,row5col2,row5col3,row5col4));
+				  
+				  var imdbTable = $('<table></table>');
+				  imdbTable.attr('width','100%');
+				  imdbTable.attr("border",1);
+				  var tb2row1 = $('<tr></tr>');
+				  
+				  var tb2row1col1 = $('<th></th>');
+				  tb2row1col1.attr("colspan",6);
+				  tb2row1col1.text("Internet Movie Database(IMDB)");
+				  imdbTable.append(tb2row1.append(tb2row1col1));
+				  infoDivTag.append(imdbTable);
+				  
+				  
+				  var tb2row2 = $('<tr></tr>');
+				  var tb2row2col1 = $('<td></td>');
+				  var tb2row2col2 = $('<td></td>');
+				  var tb2row2col3 = $('<td></td>');
+				  tb2row2col3.attr('colspan',3);
+				  tb2row2col1.text("Genre :"+ movieToDisplay.movieImdbInfoGenre()+' ');
+				  tb2row2col2.text("Director :"+ movieToDisplay.movieImdbInfoDirector()+' ');
+				  tb2row2col3.text("Writer :"+ movieToDisplay.movieImdbInfoWriter()+' ');
+				  imdbTable.append(tb2row2.append(tb2row2col1,tb2row2col2,tb2row2col3));
+	
+				  var tb2row3 = $('<tr></tr>');
+				  var tb2row3col1 = $('<td></td>');
+				  var tb2row3col2 = $('<td></td>');
+				  var tb2row3col3 = $('<td></td>');
+				  var tb2row3col4 = $('<td></td>');
+				  var tb2row3col5 = $('<td></td>');
+				  var tb2row3col6 = $('<td></td>');
+				  tb2row3col1.text('Language :'+ movieToDisplay.movieImdbInfoLanguage()+' ');
+				  tb2row3col2.text('Country :'+ movieToDisplay.movieImdbInfoCountry()+' ');
+				  tb2row3col3.text('MetaScore :'+ movieToDisplay.movieImdbInfoMetaScore()+' ');
+				  tb2row3col4.text('Rating :'+ movieToDisplay.movieImdbInfoRating()+' ');
+				  tb2row3col5.text('Votes :'+movieToDisplay.movieImdbInfoVotes()+' ');
+				  tb2row3col6.text('Type : '+movieToDisplay.movieImdbInfoType()+' ');
+				 
+				  imdbTable.append( tb2row3.append(tb2row3col1,tb2row3col2,tb2row3col3,tb2row3col4,tb2row3col5,tb2row3col6));
+				  
+				  var tb2row4 = $('<tr></tr>');
+				  var tb2row4col1 = $('<td></td>');
+				  tb2row4col1.attr('colspan',6);
+				  tb2row4col1.text('Plot : '+ movieToDisplay.movieImdbInfoPlot()+' ');
+				  imdbTable.append( tb2row4.append(tb2row4col1));
+ 					
+				  infoDivTag.append($('<hr>'));
+				  
+				  
+				  var youtubeShowTrailerTable = $('<table></table>');
+				  youtubeShowTrailerTable.attr('width','100%');
+				  youtubeShowTrailerTable.attr("border",1);
+				   
+				  var tb3row1 = $('<tr></tr>');
+				  var tb3row1col1 = $('<th></th>');
+				  tb3row1col1.text("Youtube"); 
+				  youtubeShowTrailerTable.append(tb3row1.append(tb3row1col1));
+				  infoDivTag.append(youtubeShowTrailerTable);
+				  
+				  var tb3row2 = $('<tr></tr>');
+				  var tb3row2col1 = $('<td></td>');
+				  
+				  var buttonYoutube = $('<button></button>');
+				  
+				  buttonYoutube.text("watch trailer");
+				  youtubeShowTrailerTable.append(tb3row2.append(tb3row2col1.append(buttonYoutube)));
+				  buttonYoutube.bind('click', function(){
+					  showYoutubeMovieTrailer(movieToDisplay.title())
+				  } );
+				  
+			  }
+		 	
+		 	 
+		 	 
+		 	 
+		 	 
+		 	
+		 /*
 		  function showMovieInfoInDetail(event) {
 			  
 			  var movieToDisplay =  movieMap[event.currentTarget.id]; 
@@ -631,6 +884,11 @@
 			  var titleTag = $('<p></p>');
 			  titleTag.append('<span style="font-weight:bold;text-decoration:underline">'+  movieToDisplay.title() + '</span>');
 			  infoDivTag.append(titleTag);
+			  
+			  
+			  var rottentomatoesMovieDatabase = $('<p></p>');
+			  rottentomatoesMovieDatabase.append('<span style="font-weight:bold"> Rotten Tomatoes </span>');
+			  infoDivTag.append(rottentomatoesMovieDatabase);
 			  
 			  
 			  var releaseYearTag = $('<p></p>');
@@ -647,23 +905,90 @@
 			  runtimeTag.append('<span style="font-weight:bold"> Duration : </span>'+ movieToDisplay.runtime()+' (Minutes)');
 			  infoDivTag.append(runtimeTag);
 			  
-			 
 			  
 			  var criticsConsensusTag = $('<p></p>');
 			  criticsConsensusTag.append('<span style="font-weight:bold"> Critics Consensus : </span>'+ movieToDisplay.criticsConsensus()+' ');
 			  infoDivTag.append(criticsConsensusTag);
-			  
-			  
 			  
 			  var castTag = $('<p></p>');
 			  castTag.append('<span style="font-weight:bold"> Movie Cast : </span>'+ movieToDisplay.movieCast()+' ');
 			  infoDivTag.append(castTag);
 			  
 			  
+			  var criticsRatingTag = $('<p></p>');
+			  criticsRatingTag.append('<span style="font-weight:bold"> Critics Rating : </span>'+ movieToDisplay.movieRating()+' ');
+			  infoDivTag.append(criticsRatingTag);
+			  
+			  var criticsScoreTag = $('<p></p>');
+			  criticsScoreTag.append('<span style="font-weight:bold"> Critics ScoreTag : </span>'+ movieToDisplay.movieScore()+' ');
+			  infoDivTag.append(criticsScoreTag);
+			  
+			  
+			  var audienceScoreTag = $('<p></p>');
+			  audienceScoreTag.append('<span style="font-weight:bold"> Audience Score : </span>'+ movieToDisplay.movieAudienceScore()+' ');
+			  infoDivTag.append(audienceScoreTag);
+			  
+			  var audienceRatingTag = $('<p></p>');
+			  audienceRatingTag.append('<span style="font-weight:bold"> Audience Score : </span>'+ movieToDisplay.movieAudienceRating()+' ');
+			  infoDivTag.append(audienceRatingTag);
+			  
+			  var imdbMovieDatabase = $('<p></p>');
+			  imdbMovieDatabase.append('<span style="font-weight:bold"> Internet Movie Database(IMDB) </span>');
+			  infoDivTag.append(imdbMovieDatabase);
+			  
+			 
+			  var imdbInfoGenreTag = $('<p></p>');
+			  imdbInfoGenreTag.append('<span style="font-weight:bold"> Genre : </span>'+ movieToDisplay.movieImdbInfoGenre()+' ');
+			  infoDivTag.append(imdbInfoGenreTag);
+			  
+			  
+			  var imdbInfoDirectorTag = $('<p></p>');
+			  imdbInfoDirectorTag.append('<span style="font-weight:bold"> Director : </span>'+ movieToDisplay.movieImdbInfoDirector()+' ');
+			  infoDivTag.append(imdbInfoDirectorTag);
+			  
+			  var imdbInfoWriterTag = $('<p></p>');
+			  imdbInfoWriterTag.append('<span style="font-weight:bold"> Writer : </span>'+ movieToDisplay.movieImdbInfoWriter()+' ');
+			  infoDivTag.append(imdbInfoWriterTag);
+			  
+			  var imdbInfoPlotTag = $('<p></p>');
+			  imdbInfoPlotTag.append('<span style="font-weight:bold"> Plot : </span>'+ movieToDisplay.movieImdbInfoPlot()+' ');
+			  infoDivTag.append(imdbInfoPlotTag);
+			  
+			  var imdbInfoLanguageTag = $('<p></p>');
+			  imdbInfoLanguageTag.append('<span style="font-weight:bold"> Language : </span>'+ movieToDisplay.movieImdbInfoLanguage()+' ');
+			  infoDivTag.append(imdbInfoLanguageTag);
+			  
+			  var imdbInfoCountryTag = $('<p></p>');
+			  imdbInfoCountryTag.append('<span style="font-weight:bold"> Country : </span>'+ movieToDisplay.movieImdbInfoCountry()+' ');
+			  infoDivTag.append(imdbInfoCountryTag);
+			  
+			  
+			  var imdbInfoMetaScoreTag = $('<p></p>');
+			  imdbInfoMetaScoreTag.append('<span style="font-weight:bold"> MetaScore : </span>'+ movieToDisplay.movieImdbInfoMetaScore()+' ');
+			  infoDivTag.append(imdbInfoCountryTag);
+			  
+			  var imdbInfoRatingTag = $('<p></p>');
+			  imdbInfoRatingTag.append('<span style="font-weight:bold"> Rating : </span>'+ movieToDisplay.movieImdbInfoRating()+' ');
+			  infoDivTag.append(imdbInfoRatingTag);
+			 
+			  
+			  var imdbInfoVotesTag = $('<p></p>');
+			  imdbInfoVotesTag.append('<span style="font-weight:bold"> Votes : </span>'+ movieToDisplay.movieImdbInfoVotes()+' ');
+			  infoDivTag.append(imdbInfoVotesTag);
+			 
+			  var imdbInfoTypeTag = $('<p></p>');
+			  imdbInfoTypeTag.append('<span style="font-weight:bold"> Type : </span>'+ movieToDisplay.movieImdbInfoType()+' ');
+			  infoDivTag.append(imdbInfoTypeTag);
+			  
 		  }
+		 */ 
 		  
+	
 		  
-		  function Movie (id,movie_title,movie_year,movie_mpaa_rating,movie_runtime,movie_critics_consensus,movie_cast ){
+
+		  
+		  function Movie (id,movie_title,movie_year,movie_mpaa_rating,movie_runtime,movie_critics_consensus,movie_cast,criticsRating,criticsScore,audienceScore,audienceRating,
+				  imdbInfoGenre,imdbInfoDirector,imdbInfoWriter,imdbInfoPlot,imdbInfoLanguage,imdbInfoCountry,imdbInfoMetaScore,imdbInfoRating,imdbInfoVotes,imdbInfoType ){
 			  this.id = id;
 			  this.movie_title = movie_title;
 			  this.movie_year = movie_year;
@@ -671,7 +996,25 @@
 			  this.movie_runtime = movie_runtime;
 			  this.movie_critics_consensus = movie_critics_consensus;
 			  this.movie_cast = movie_cast;
+			  
+			  this.criticsRating = criticsRating;
+			  this.criticsScore  = criticsScore;
+			  this.audienceScore = audienceScore;
+			  this.audienceRating = audienceRating;
+			  
+			  this.imdbInfoGenre = imdbInfoGenre;
+			  this.imdbInfoDirector = imdbInfoDirector;
+			  this.imdbInfoWriter = imdbInfoWriter;
+			  this.imdbInfoPlot = imdbInfoPlot;
+			  this.imdbInfoLanguage = imdbInfoLanguage;
+			  this.imdbInfoCountry = imdbInfoCountry;
+			  this.imdbInfoMetaScore = imdbInfoMetaScore;
+			  this.imdbInfoRating = imdbInfoRating;
+			  this.imdbInfoVotes = imdbInfoVotes;
+			  this.imdbInfoType = imdbInfoType;
+			  
 		  }
+		  
 		  
 		  
 		  Movie.prototype.title = function(){
@@ -720,6 +1063,67 @@
 		  Movie.prototype.movieCast = function(){
 		      return this.movie_cast;
 		  }
+		  
+		  Movie.prototype.movieRating = function(){
+		      return this.criticsRating;
+		  }
+		  
+		  Movie.prototype.movieScore = function(){
+		      return this.criticsScore;
+		  }
+		  
+		  Movie.prototype.movieAudienceScore = function(){
+		      return this.audienceScore;
+		  }
+		  
+		  Movie.prototype.movieAudienceRating = function(){
+		      return this.audienceRating;
+		  }
+		  
+		
+		  Movie.prototype.movieImdbInfoGenre = function(){
+		      return this.imdbInfoGenre;
+		  }
+		  
+		  Movie.prototype.movieImdbInfoDirector = function(){
+		      return this.imdbInfoDirector;
+		  }
+	
+		  Movie.prototype.movieImdbInfoWriter = function(){
+		      return this.imdbInfoWriter;
+		  }
+	
+		  Movie.prototype.movieImdbInfoPlot = function(){
+		      return this.imdbInfoPlot;
+		  }
+	
+		  
+		  Movie.prototype.movieImdbInfoLanguage = function(){
+		      return this.imdbInfoLanguage;
+		  }
+	
+		  
+		  Movie.prototype.movieImdbInfoCountry = function(){
+		      return this.imdbInfoCountry;
+		  }
+		  
+		 
+		  Movie.prototype.movieImdbInfoMetaScore = function(){
+		      return this.imdbInfoMetaScore;
+		  }
+		  
+		  Movie.prototype.movieImdbInfoRating = function(){
+		      return this.imdbInfoRating;
+		  }
+		  
+		  Movie.prototype.movieImdbInfoVotes = function(){
+		      return this.imdbInfoVotes;
+		  }
+		  
+		  Movie.prototype.movieImdbInfoType = function(){
+		      return this.imdbInfoType;
+		  }
+		  
 			  
 		});
 	

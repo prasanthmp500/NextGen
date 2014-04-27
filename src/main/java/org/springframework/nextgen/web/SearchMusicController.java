@@ -92,6 +92,8 @@ public class SearchMusicController {
 	   sbf.append("&");
 	   sbf.append("api_key=".concat(Utils.LAST_FM_API_KEY));
 	   sbf.append("&");
+	   sbf.append("limit=50");
+	   sbf.append("&");
 	   sbf.append("format=json");
 	   String jsonresult = restTemplate.getForObject(sbf.toString(), String.class);
 	   return jsonresult;

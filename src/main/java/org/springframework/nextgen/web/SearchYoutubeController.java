@@ -47,6 +47,26 @@ public class SearchYoutubeController {
    }
    
 
-
+   
+   @RequestMapping(value="/searchMovieTrailer/{videotrailer}", method=RequestMethod.GET)
+   @ResponseBody
+   public String searchMovieTrailer(@PathVariable String videotrailer){
+	   RestTemplate restTemplate = new RestTemplate();
+	   StringBuffer sbf = new StringBuffer("https://www.googleapis.com/youtube/v3/search?part=snippet");
+	   sbf.append("&");
+	   sbf.append("maxResults=1");
+	   sbf.append("&");
+	   sbf.append("order=relevance");
+	   sbf.append("&");
+	   sbf.append("q="+videotrailer.concat(" trailer"));
+	   sbf.append("&");
+	   sbf.append("type=video");
+	   sbf.append("&");
+	   sbf.append("key="+Utils.YOU_TUBE_API_KEY);
+	   String jsonresult = restTemplate.getForObject(sbf.toString(), String.class);
+	   return jsonresult;
+   }
+   
+   
 
 }
