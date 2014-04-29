@@ -41,10 +41,10 @@ public class SocialConfig {
    // private static String  FACEBOOK_CLIENTSECRET = "51c1e65b3f1cff6c6ef9895201e0a5d0";
 		
      
-	// cloudbees
+	 // cloudbees
 	// private static String FACEBOOK_CLIENTID= "493025320809107";
 		
-   //  private static String  FACEBOOK_CLIENTSECRET = "29d4a78ba7687a32aa931cd89f731153";
+    // private static String  FACEBOOK_CLIENTSECRET = "29d4a78ba7687a32aa931cd89f731153";
 		
     
 	
